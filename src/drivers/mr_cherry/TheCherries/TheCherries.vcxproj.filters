@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\World">
+      <UniqueIdentifier>{7ca2befd-e448-4b9e-a8b8-eb8978caa8de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ActionValue">
+      <UniqueIdentifier>{72ace7e9-6e9e-4679-a549-12856d740b45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Agent">
+      <UniqueIdentifier>{e011e300-b301-42ad-9fd0-d944ece9a63a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\OutputData">
+      <UniqueIdentifier>{b979d00f-242c-423d-9f0a-d2b61a89be24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Auxilliaries">
+      <UniqueIdentifier>{63cfd461-ad11-4f7f-9b97-fd2db9953fde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Auxilliaries">
+      <UniqueIdentifier>{cbf0085f-d48e-4a38-8257-51f10f2c4fd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\World">
+      <UniqueIdentifier>{11763cb7-02af-42d7-93eb-40601b5bb9eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ActionValue\BaseClasses">
+      <UniqueIdentifier>{7b332c8a-6083-42ef-abc4-fa5ab86edf37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ActionValue">
+      <UniqueIdentifier>{05ef3335-b93a-4173-8737-481bec4715bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Agent">
+      <UniqueIdentifier>{9a1daca2-97a8-4368-9fb5-40c5bede4e6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Policy">
+      <UniqueIdentifier>{14cb7e9a-b7ab-4542-9bba-732172f564e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Policy">
+      <UniqueIdentifier>{e37d1f37-623c-4e5e-bbfc-85c1f0551f03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Interpretors">
+      <UniqueIdentifier>{bc10f839-f868-4cfc-a287-395f8ecac66a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Interpretors">
+      <UniqueIdentifier>{372e9239-d45d-44c1-add2-b330e31be2bc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PerformanceStats.h">
+      <Filter>Header Files\Auxilliaries</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldBase.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="AgentBase.h">
+      <Filter>Header Files\Agent</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionValue.h">
+      <Filter>Header Files\ActionValue\BaseClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelBasedBase.h">
+      <Filter>Header Files\ActionValue\BaseClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelFreeBase.h">
+      <Filter>Header Files\ActionValue\BaseClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="QLearning.h">
+      <Filter>Header Files\ActionValue</Filter>
+    </ClInclude>
+    <ClInclude Include="StateTransition.h">
+      <Filter>Header Files\Auxilliaries</Filter>
+    </ClInclude>
+    <ClInclude Include="AgentSingle.h">
+      <Filter>Header Files\Agent</Filter>
+    </ClInclude>
+    <ClInclude Include="PolicyBase.h">
+      <Filter>Header Files\Policy</Filter>
+    </ClInclude>
+    <ClInclude Include="SoftmaxPolicy.h">
+      <Filter>Header Files\Policy</Filter>
+    </ClInclude>
+    <ClInclude Include="GridWorldBase.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="EpsilonGreedy.h">
+      <Filter>Header Files\Policy</Filter>
+    </ClInclude>
+    <ClInclude Include="TraditionalMaze.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="OptimalPolicy.h">
+      <Filter>Header Files\Policy</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PolicyHeaders.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelBasedLearning.h">
+      <Filter>Header Files\ActionValue</Filter>
+    </ClInclude>
+    <ClInclude Include="HashVecDoubles.h">
+      <Filter>Header Files\Agent</Filter>
+    </ClInclude>
+    <ClInclude Include="InterpretorBase.h">
+      <Filter>Header Files\Interpretors</Filter>
+    </ClInclude>
+    <ClInclude Include="TraditionalMazeInterpretor.h">
+      <Filter>Header Files\Interpretors</Filter>
+    </ClInclude>
+    <ClInclude Include="EgoAloMaze.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelBasedEgoAlo.h">
+      <Filter>Header Files\ActionValue</Filter>
+    </ClInclude>
+    <ClInclude Include="EgoAloMazeInterpretor.h">
+      <Filter>Header Files\Interpretors</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="PerformanceStats.cpp">
+      <Filter>Source Files\Auxilliaries</Filter>
+    </ClCompile>
+    <ClCompile Include="QLearning.cpp">
+      <Filter>Source Files\ActionValue</Filter>
+    </ClCompile>
+    <ClCompile Include="StateTransition.cpp">
+      <Filter>Source Files\Auxilliaries</Filter>
+    </ClCompile>
+    <ClCompile Include="AgentSingle.cpp">
+      <Filter>Source Files\Agent</Filter>
+    </ClCompile>
+    <ClCompile Include="SoftmaxPolicy.cpp">
+      <Filter>Source Files\Policy</Filter>
+    </ClCompile>
+    <ClCompile Include="TraditionalMaze.cpp">
+      <Filter>Source Files\World</Filter>
+    </ClCompile>
+    <ClCompile Include="EpsilonGreedy.cpp">
+      <Filter>Source Files\Policy</Filter>
+    </ClCompile>
+    <ClCompile Include="OptimalPolicy.cpp">
+      <Filter>Source Files\Policy</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelBasedLearning.cpp">
+      <Filter>Source Files\ActionValue</Filter>
+    </ClCompile>
+    <ClCompile Include="TraditionalMazeInterpretor.cpp">
+      <Filter>Source Files\Interpretors</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelBasedEgoAlo.cpp">
+      <Filter>Source Files\ActionValue</Filter>
+    </ClCompile>
+    <ClCompile Include="EgoAloMaze.cpp">
+      <Filter>Source Files\World</Filter>
+    </ClCompile>
+    <ClCompile Include="EgoAloMazeInterpretor.cpp">
+      <Filter>Source Files\Interpretors</Filter>
+    </ClCompile>
+    <ClCompile Include="TheCherries.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="StateVects.natvis">
+      <Filter>Resource Files</Filter>
+    </Natvis>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TheCherries.def" />
+  </ItemGroup>
+</Project>

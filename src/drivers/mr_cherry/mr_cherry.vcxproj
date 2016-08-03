@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F5AD4D0F-63F6-46AE-AC22-EA5E43BE4EC5}</ProjectGuid>
+    <RootNamespace>mr_cherry</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v90</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v90</PlatformToolset>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IgnoreImportLibrary>true</IgnoreImportLibrary>
+    <LinkIncremental>false</LinkIncremental>
+    <GenerateManifest>false</GenerateManifest>
+    <OutDir>.\$(Configuration)\</OutDir>
+    <IntDir>.\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <GenerateManifest>false</GenerateManifest>
+    <LinkIncremental>false</LinkIncremental>
+    <IgnoreImportLibrary>true</IgnoreImportLibrary>
+    <OutDir>.\$(Configuration)\</OutDir>
+    <IntDir>.\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level2</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>false</SDLCheck>
+      <AdditionalIncludeDirectories>$(TORCS_SRC)\drivers\mr_cherry\TheCherries;$(TORCS_SRC)\interfaces;$(TORCS_SRC)\windows\include\ogg;$(TORCS_SRC)\windows\include\GL;$(TORCS_SRC)\windows\include\AL;$(TORCS_SRC)\windows\include;$(TORCS_SRC)\windows\dll;$(TORCS_SRC)\tools\trackgen;$(TORCS_SRC)\tools\texmapper;$(TORCS_SRC)\tools\package\specfiles;$(TORCS_SRC)\tools\nfsperf;$(TORCS_SRC)\tools\nfs2ac;$(TORCS_SRC)\tools\accc;$(TORCS_SRC)\raceman;$(TORCS_SRC)\modules\track;$(TORCS_SRC)\modules\telemetry;$(TORCS_SRC)modules\simu\simuv2\SOLID-2.0\include\3D;$(TORCS_SRC)modules\simu\simuv2\SOLID-2.0\include\SOLID;$(TORCS_SRC)\modules\simu\simuv2\SOLID-2.0\src;$(TORCS_SRC)\modules\simu\simuv2;$(TORCS_SRC)\modules\graphic\ssggraph;$(TORCS_SRC)\windows;$(TORCS_SRC);$(TORCS_SRC)\windows\lib;$(TORCS_SRC)\windows\include\vorbis;$(TORCS_SRC)\windows\include\plib;$(TORCS_LIBS)\musicplayer;$(TORCS_LIBS)\tgf;$(TORCS_LIBS)\learning;$(TORCS_LIBS)\tgfclient;$(TORCS_LIBS)\robottools;$(TORCS_LIBS)\client;$(TORCS_LIBS)\confscreens;$(TORCS_LIBS)\portability;$(TORCS_LIBS)\math;$(TORCS_LIBS)\racescreens;$(TORCS_LIBS)\raceengineclient;$(TORCS_LIBS)\tmath;$(TORCS_LIBS);$(TORCS_LIBS)\txml\genmtab;$(TORCS_LIBS)\txml;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;MR_CHERRY_EXPORTS;DEBUG;DEBUG_OUT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <CallingConvention>Cdecl</CallingConvention>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PrecompiledHeaderOutputFile>.\Debug/mr_cherry.pch</PrecompiledHeaderOutputFile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <MinimalRebuild>false</MinimalRebuild>
+      <AssemblerListingLocation>.\$(Configuration)/</AssemblerListingLocation>
+      <ObjectFileName>.\$(Configuration)/</ObjectFileName>
+      <ProgramDataBaseFileName>.\$(Configuration)/</ProgramDataBaseFileName>
+    </ClCompile>
+    <Link />
+    <Link>
+      <ModuleDefinitionFile>.\mr_cherry.def</ModuleDefinitionFile>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
+      <AdditionalDependencies>.\TheCherries\$(Configuration)\TheCherries.lib;tgf.lib;robottools.lib;sg_vs2008_32.lib;ul_vs2008_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EnableUAC>false</EnableUAC>
+      <MapFileName>.\Debug/mr_cherry.map</MapFileName>
+      <GenerateMapFile>true</GenerateMapFile>
+      <AdditionalLibraryDirectories>../../../export/libd;../../windows/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>LIBCMT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <OutputFile>.\$(Configuration)\mr_cherry.dll</OutputFile>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>false</DataExecutionPrevention>
+      <ImportLibrary>.\$(Configuration)/mr_cherry.lib</ImportLibrary>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy $(TargetDir)*.dll $(SolutionDir)runtimed\drivers\mr_cherry</Command>
+    </PostBuildEvent>
+    <Xdcmake>
+      <DocumentLibraryDependencies>false</DocumentLibraryDependencies>
+    </Xdcmake>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <ModuleDefinitionFile>mr_cherry.def</ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level2</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <SDLCheck>false</SDLCheck>
+      <AdditionalIncludeDirectories>$(TORCS_SRC)\drivers\mr_cherry\TheCherries;$(TORCS_SRC)\interfaces;$(TORCS_SRC)\windows\include\ogg;$(TORCS_SRC)\windows\include\GL;$(TORCS_SRC)\windows\include\AL;$(TORCS_SRC)\windows\include;$(TORCS_SRC)\windows\dll;$(TORCS_SRC)\tools\trackgen;$(TORCS_SRC)\tools\texmapper;$(TORCS_SRC)\tools\package\specfiles;$(TORCS_SRC)\tools\nfsperf;$(TORCS_SRC)\tools\nfs2ac;$(TORCS_SRC)\tools\accc;$(TORCS_SRC)\raceman;$(TORCS_SRC)\modules\track;$(TORCS_SRC)\modules\telemetry;$(TORCS_SRC)modules\simu\simuv2\SOLID-2.0\include\3D;$(TORCS_SRC)modules\simu\simuv2\SOLID-2.0\include\SOLID;$(TORCS_SRC)\modules\simu\simuv2\SOLID-2.0\src;$(TORCS_SRC)\modules\simu\simuv2;$(TORCS_SRC)\modules\graphic\ssggraph;$(TORCS_SRC)\windows;$(TORCS_SRC);$(TORCS_SRC)\windows\lib;$(TORCS_SRC)\windows\include\vorbis;$(TORCS_SRC)\windows\include\plib;$(TORCS_LIBS)\musicplayer;$(TORCS_LIBS)\tgf;$(TORCS_LIBS)\learning;$(TORCS_LIBS)\tgfclient;$(TORCS_LIBS)\robottools;$(TORCS_LIBS)\client;$(TORCS_LIBS)\confscreens;$(TORCS_LIBS)\portability;$(TORCS_LIBS)\math;$(TORCS_LIBS)\racescreens;$(TORCS_LIBS)\raceengineclient;$(TORCS_LIBS)\tmath;$(TORCS_LIBS);$(TORCS_LIBS)\txml\genmtab;$(TORCS_LIBS)\txml;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderOutputFile>.\Release/mr_cherry.pch</PrecompiledHeaderOutputFile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;MR_CHERRY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <StringPooling>true</StringPooling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AssemblerListingLocation>.\$(Configuration)/</AssemblerListingLocation>
+      <ObjectFileName>.\$(Configuration)/</ObjectFileName>
+      <ProgramDataBaseFileName>.\$(Configuration)/</ProgramDataBaseFileName>
+    </ClCompile>
+    <Link>
+      <ModuleDefinitionFile>.\mr_cherry.def</ModuleDefinitionFile>
+      <AdditionalDependencies>.\TheCherries\$(Configuration)\TheCherries.lib;tgf.lib;robottools.lib;sg_vs2008_32.lib;ul_vs2008_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <MapFileName>.\Release/mr_cherry.map</MapFileName>
+      <GenerateMapFile>true</GenerateMapFile>
+      <AdditionalLibraryDirectories>../../../export/lib;../../windows/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <OutputFile>.\$(Configuration)\mr_cherry.dll</OutputFile>
+      <ImportLibrary>.\$(Configuration)/mr_cherry.lib</ImportLibrary>
+      <EnableUAC>false</EnableUAC>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>false</DataExecutionPrevention>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+    <PostBuildEvent>
+      <Command>copy $(TargetDir)*.dll $(SolutionDir)runtime\drivers\mr_cherry</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ModuleDefinitionFile>mr_cherry.def</ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="cardata.h" />
+    <ClInclude Include="driver.h" />
+    <ClInclude Include="learn.h" />
+    <ClInclude Include="linalg.h" />
+    <ClInclude Include="opponent.h" />
+    <ClInclude Include="pit.h" />
+    <ClInclude Include="spline.h" />
+    <ClInclude Include="strategy.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cardata.cpp" />
+    <ClCompile Include="driver.cpp" />
+    <ClCompile Include="learn.cpp" />
+    <ClCompile Include="mr_cherry.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">_WINDLL;_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="opponent.cpp" />
+    <ClCompile Include="pit.cpp" />
+    <ClCompile Include="spline.cpp" />
+    <ClCompile Include="strategy.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="mr_cherry.def" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

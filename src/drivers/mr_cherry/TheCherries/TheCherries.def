@@ -1,0 +1,8 @@
+LIBRARY	TheCherries
+
+SECTIONS .data READ WRITE
+
+EXPORTS
+	cherryEntry
+	PerformAction
+	PerformUpdate

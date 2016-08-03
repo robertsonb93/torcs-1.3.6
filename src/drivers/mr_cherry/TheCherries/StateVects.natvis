@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+<Type Name="std::vector&lt;*&gt;">
+    <DisplayString Condition="(_Mylast - _Myfirst) >  3">[{_Mylast - _Myfirst}] ({_Myfirst[0]}, {_Myfirst[1]}, {_Myfirst[2]}, ...)</DisplayString>
+    <DisplayString Condition="(_Mylast - _Myfirst) == 3">[{_Mylast - _Myfirst}] ({_Myfirst[0]}, {_Myfirst[1]}, {_Myfirst[2]})</DisplayString>
+    <DisplayString Condition="(_Mylast - _Myfirst) == 2">[{_Mylast - _Myfirst}] ({_Myfirst[0]}, {_Myfirst[1]})</DisplayString>
+    <DisplayString Condition="(_Mylast - _Myfirst) == 1">[{_Mylast - _Myfirst}] ({_Myfirst[0]})</DisplayString>
+    <DisplayString>{{ size={_Mylast - _Myfirst} }}</DisplayString>
+    <Expand>
+        <Item Name="[size]">_Mylast - _Myfirst</Item>
+        <Item Name="[capacity]">_Myend - _Myfirst</Item>
+        <ArrayItems>
+            <Size>_Mylast - _Myfirst</Size>
+            <ValuePointer>_Myfirst</ValuePointer>
+        </ArrayItems>
+    </Expand>
+</Type>
+
+</AutoVisualizer>

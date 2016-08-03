@@ -1,0 +1,350 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{4F4D3684-EE40-41A9-AC48-C98687A359A4}</ProjectGuid>
+    <RootNamespace>learning</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v90</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v90</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v90</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v90</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>14.0.25123.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\Debug\</OutDir>
+    <IntDir>.\Debug\</IntDir>
+    <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
+    <IgnoreImportLibrary>false</IgnoreImportLibrary>
+    <LinkIncremental>false</LinkIncremental>
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
+    <IgnoreImportLibrary>false</IgnoreImportLibrary>
+    <LinkIncremental>false</LinkIncremental>
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\Release\</OutDir>
+    <IntDir>.\Release\</IntDir>
+    <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
+    <LinkIncremental>false</LinkIncremental>
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
+    <LinkIncremental>false</LinkIncremental>
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\Debug/learning.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(TORCS_SRC)\interfaces;$(TORCS_SRC)\windows\include\ogg;$(TORCS_SRC)\windows\include\GL;$(TORCS_SRC)\windows\include\AL;$(TORCS_SRC)\windows\include;$(TORCS_SRC)\windows\dll;$(TORCS_SRC)\tools\trackgen;$(TORCS_SRC)\tools\texmapper;$(TORCS_SRC)\tools\package\specfiles;$(TORCS_SRC)\tools\nfsperf;$(TORCS_SRC)\tools\nfs2ac;$(TORCS_SRC)\tools\accc;$(TORCS_SRC)\raceman;$(TORCS_SRC)\modules\track;$(TORCS_SRC)\modules\telemetry;$(TORCS_SRC)modules\simu\simuv2\SOLID-2.0\include\3D;$(TORCS_SRC)modules\simu\simuv2\SOLID-2.0\include\SOLID;$(TORCS_SRC)\modules\simu\simuv2\SOLID-2.0\src;$(TORCS_SRC)\modules\simu\simuv2;$(TORCS_SRC)\modules\graphic\ssggraph;$(TORCS_SRC)\windows;$(TORCS_SRC);$(TORCS_SRC)\windows\lib;$(TORCS_SRC)\windows\include\vorbis;$(TORCS_SRC)\windows\include\plib;$(TORCS_LIBS)\musicplayer;$(TORCS_LIBS)\tgf;$(TORCS_LIBS)\learning;$(TORCS_LIBS)\tgfclient;$(TORCS_LIBS)\robottools;$(TORCS_LIBS)\client;$(TORCS_LIBS)\confscreens;$(TORCS_LIBS)\portability;$(TORCS_LIBS)\math;$(TORCS_LIBS)\racescreens;$(TORCS_LIBS)\raceengineclient;$(TORCS_LIBS)\tmath;$(TORCS_LIBS);$(TORCS_LIBS)\txml\genmtab;$(TORCS_LIBS)\txml;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;LEARNING_EXPORTS;DEBUG;DEBUG_OUT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeaderOutputFile>.\Debug/learning.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Debug/</AssemblerListingLocation>
+      <ObjectFileName>.\Debug/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level2</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0807</Culture>
+    </ResourceCompile>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+    <Link>
+      <OutputFile>.\Debug/learning.dll</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>../../../export/libd;../../windows/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <EnableUAC>false</EnableUAC>
+      <IgnoreSpecificDefaultLibraries>LIBCMT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ModuleDefinitionFile>./learning.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>.\Debug/learning.pdb</ProgramDatabaseFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapFileName>.\Debug/learning.map</MapFileName>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <SupportUnloadOfDelayLoadedDLL>false</SupportUnloadOfDelayLoadedDLL>
+      <ImportLibrary>.\Debug/learning.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug/learning.bsc</OutputFile>
+    </Bscmake>
+    <PostBuildEvent>
+      <Command>copy $(TargetDir)*.dll $(SolutionDir)runtimed
+copy $(TargetDir)*.lib $(SolutionDir)export\libd
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TypeLibraryName>.\Debug/learning.tlb</TypeLibraryName>
+      <HeaderFileName>
+      </HeaderFileName>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(TORCS_SRC)\interfaces;$(TORCS_SRC)\windows\include\ogg;$(TORCS_SRC)\windows\include\GL;$(TORCS_SRC)\windows\include\AL;$(TORCS_SRC)\windows\include;$(TORCS_SRC)\windows\dll;$(TORCS_SRC)\tools\trackgen;$(TORCS_SRC)\tools\texmapper;$(TORCS_SRC)\tools\package\specfiles;$(TORCS_SRC)\tools\nfsperf;$(TORCS_SRC)\tools\nfs2ac;$(TORCS_SRC)\tools\accc;$(TORCS_SRC)\raceman;$(TORCS_SRC)\modules\track;$(TORCS_SRC)\modules\telemetry;$(TORCS_SRC)modules\simu\simuv2\SOLID-2.0\include\3D;$(TORCS_SRC)modules\simu\simuv2\SOLID-2.0\include\SOLID;$(TORCS_SRC)\modules\simu\simuv2\SOLID-2.0\src;$(TORCS_SRC)\modules\simu\simuv2;$(TORCS_SRC)\modules\graphic\ssggraph;$(TORCS_SRC)\windows;$(TORCS_SRC);$(TORCS_SRC)\windows\lib;$(TORCS_SRC)\windows\include\vorbis;$(TORCS_SRC)\windows\include\plib;$(TORCS_LIBS)\musicplayer;$(TORCS_LIBS)\tgf;$(TORCS_LIBS)\learning;$(TORCS_LIBS)\tgfclient;$(TORCS_LIBS)\robottools;$(TORCS_LIBS)\client;$(TORCS_LIBS)\confscreens;$(TORCS_LIBS)\portability;$(TORCS_LIBS)\math;$(TORCS_LIBS)\racescreens;$(TORCS_LIBS)\raceengineclient;$(TORCS_LIBS)\tmath;$(TORCS_LIBS);$(TORCS_LIBS)\txml\genmtab;$(TORCS_LIBS)\txml;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;LEARNING_EXPORTS;DEBUG;DEBUG_OUT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeaderOutputFile>.\Debug/learning.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Debug/</AssemblerListingLocation>
+      <ObjectFileName>.\Debug/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level2</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0807</Culture>
+    </ResourceCompile>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+    <Link>
+      <OutputFile>.\Debug/learning.dll</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>../../../export/libd;../../windows/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <EnableUAC>false</EnableUAC>
+      <IgnoreSpecificDefaultLibraries>LIBCMT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ModuleDefinitionFile>./learning.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>.\Debug/learning.pdb</ProgramDatabaseFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapFileName>.\Debug/learning.map</MapFileName>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <SupportUnloadOfDelayLoadedDLL>false</SupportUnloadOfDelayLoadedDLL>
+      <ImportLibrary>.\Debug/learning.lib</ImportLibrary>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug/learning.bsc</OutputFile>
+    </Bscmake>
+    <PostBuildEvent>
+      <Command>copy $(TargetDir)*.dll $(SolutionDir)runtimed
+copy $(TargetDir)*.lib $(SolutionDir)export\libd
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\Release/learning.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>$(TORCS_SRC)\interfaces;$(TORCS_SRC)\windows\include\ogg;$(TORCS_SRC)\windows\include\GL;$(TORCS_SRC)\windows\include\AL;$(TORCS_SRC)\windows\include;$(TORCS_SRC)\windows\dll;$(TORCS_SRC)\tools\trackgen;$(TORCS_SRC)\tools\texmapper;$(TORCS_SRC)\tools\package\specfiles;$(TORCS_SRC)\tools\nfsperf;$(TORCS_SRC)\tools\nfs2ac;$(TORCS_SRC)\tools\accc;$(TORCS_SRC)\raceman;$(TORCS_SRC)\modules\track;$(TORCS_SRC)\modules\telemetry;$(TORCS_SRC)modules\simu\simuv2\SOLID-2.0\include\3D;$(TORCS_SRC)modules\simu\simuv2\SOLID-2.0\include\SOLID;$(TORCS_SRC)\modules\simu\simuv2\SOLID-2.0\src;$(TORCS_SRC)\modules\simu\simuv2;$(TORCS_SRC)\modules\graphic\ssggraph;$(TORCS_SRC)\windows;$(TORCS_SRC);$(TORCS_SRC)\windows\lib;$(TORCS_SRC)\windows\include\vorbis;$(TORCS_SRC)\windows\include\plib;$(TORCS_LIBS)\musicplayer;$(TORCS_LIBS)\tgf;$(TORCS_LIBS)\learning;$(TORCS_LIBS)\tgfclient;$(TORCS_LIBS)\robottools;$(TORCS_LIBS)\client;$(TORCS_LIBS)\confscreens;$(TORCS_LIBS)\portability;$(TORCS_LIBS)\math;$(TORCS_LIBS)\racescreens;$(TORCS_LIBS)\raceengineclient;$(TORCS_LIBS)\tmath;$(TORCS_LIBS);$(TORCS_LIBS)\txml\genmtab;$(TORCS_LIBS)\txml;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;LEARNING_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <PrecompiledHeaderOutputFile>.\Release/learning.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Release/</AssemblerListingLocation>
+      <ObjectFileName>.\Release/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
+      <WarningLevel>Level2</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0807</Culture>
+    </ResourceCompile>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+    <Link>
+      <OutputFile>.\Release/learning.dll</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>../../../export/lib;../../windows/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <EnableUAC>false</EnableUAC>
+      <ModuleDefinitionFile>.\learning.def</ModuleDefinitionFile>
+      <ProgramDatabaseFile>.\Release/learning.pdb</ProgramDatabaseFile>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <ImportLibrary>.\Release/learning.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release/learning.bsc</OutputFile>
+    </Bscmake>
+    <PostBuildEvent>
+      <Command>copy $(TargetDir)*.dll $(SolutionDir)runtime
+copy $(TargetDir)*.lib $(SolutionDir)export\lib
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TypeLibraryName>.\Release/learning.tlb</TypeLibraryName>
+      <HeaderFileName>
+      </HeaderFileName>
+    </Midl>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>$(TORCS_SRC)\interfaces;$(TORCS_SRC)\windows\include\ogg;$(TORCS_SRC)\windows\include\GL;$(TORCS_SRC)\windows\include\AL;$(TORCS_SRC)\windows\include;$(TORCS_SRC)\windows\dll;$(TORCS_SRC)\tools\trackgen;$(TORCS_SRC)\tools\texmapper;$(TORCS_SRC)\tools\package\specfiles;$(TORCS_SRC)\tools\nfsperf;$(TORCS_SRC)\tools\nfs2ac;$(TORCS_SRC)\tools\accc;$(TORCS_SRC)\raceman;$(TORCS_SRC)\modules\track;$(TORCS_SRC)\modules\telemetry;$(TORCS_SRC)modules\simu\simuv2\SOLID-2.0\include\3D;$(TORCS_SRC)modules\simu\simuv2\SOLID-2.0\include\SOLID;$(TORCS_SRC)\modules\simu\simuv2\SOLID-2.0\src;$(TORCS_SRC)\modules\simu\simuv2;$(TORCS_SRC)\modules\graphic\ssggraph;$(TORCS_SRC)\windows;$(TORCS_SRC);$(TORCS_SRC)\windows\lib;$(TORCS_SRC)\windows\include\vorbis;$(TORCS_SRC)\windows\include\plib;$(TORCS_LIBS)\musicplayer;$(TORCS_LIBS)\tgf;$(TORCS_LIBS)\learning;$(TORCS_LIBS)\tgfclient;$(TORCS_LIBS)\robottools;$(TORCS_LIBS)\client;$(TORCS_LIBS)\confscreens;$(TORCS_LIBS)\portability;$(TORCS_LIBS)\math;$(TORCS_LIBS)\racescreens;$(TORCS_LIBS)\raceengineclient;$(TORCS_LIBS)\tmath;$(TORCS_LIBS);$(TORCS_LIBS)\txml\genmtab;$(TORCS_LIBS)\txml;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;LEARNING_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <PrecompiledHeaderOutputFile>.\Release/learning.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Release/</AssemblerListingLocation>
+      <ObjectFileName>.\Release/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
+      <WarningLevel>Level2</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0807</Culture>
+    </ResourceCompile>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+    <Link>
+      <OutputFile>.\Release/learning.dll</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>../../../export/lib;../../windows/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <EnableUAC>false</EnableUAC>
+      <ModuleDefinitionFile>.\learning.def</ModuleDefinitionFile>
+      <ProgramDatabaseFile>.\Release/learning.pdb</ProgramDatabaseFile>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <ImportLibrary>.\Release/learning.lib</ImportLibrary>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release/learning.bsc</OutputFile>
+    </Bscmake>
+    <PostBuildEvent>
+      <Command>copy $(TargetDir)*.dll $(SolutionDir)runtime
+copy $(TargetDir)*.lib $(SolutionDir)export\lib
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="ANN.cpp" />
+    <ClCompile Include="ann_policy.cpp" />
+    <ClCompile Include="Distribution.cpp" />
+    <ClCompile Include="List.cpp" />
+    <ClCompile Include="MathFunctions.cpp" />
+    <ClCompile Include="policy.cpp" />
+    <ClCompile Include="string_utils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="learning.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ANN.h" />
+    <ClInclude Include="ann_policy.h" />
+    <ClInclude Include="Distribution.h" />
+    <ClInclude Include="learn_debug.h" />
+    <ClInclude Include="List.h" />
+    <ClInclude Include="MathFunctions.h" />
+    <ClInclude Include="policy.h" />
+    <ClInclude Include="real.h" />
+    <ClInclude Include="string_utils.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
