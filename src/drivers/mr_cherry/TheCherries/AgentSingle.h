@@ -24,6 +24,8 @@ typedef QLearning _DefaultAVType;
 		 vector<double> SelectAction();
 		 vector<double> SelectAction(vector<double>& params);
 		 void LogEvent(StateTransition transition);
+		 void SaveLearnerArchive(string filename);
+		 void LoadLearnerArchive(string filename);
 
 		 //Used when Creating the Agent, you must call these functions afterwards as there will not be any action value or world for the agent yet.
 		 void setActionValue(ActionValue* newAv);

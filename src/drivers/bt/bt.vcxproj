@@ -145,6 +145,7 @@
       <DataExecutionPrevention />
       <ImportLibrary>.\Debug/bt.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -256,6 +257,7 @@
       <DataExecutionPrevention />
       <ImportLibrary>.\Release/bt.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>

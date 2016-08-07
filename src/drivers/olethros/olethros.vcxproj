@@ -141,6 +141,7 @@
       <DataExecutionPrevention />
       <ImportLibrary>.\Release/olethros.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -250,6 +251,7 @@
       <DataExecutionPrevention />
       <ImportLibrary>.\Debug/olethros.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>

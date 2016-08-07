@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "ModelBasedEgoAlo.h"
+BOOST_CLASS_EXPORT_IMPLEMENT(ModelBasedEgoAlo)
+
+
 
 
 ModelBasedEgoAlo::ModelBasedEgoAlo(const vector<vector<double>>& AvailActions, const vector<double>& StartState, const int EgoSize)
@@ -8,7 +11,7 @@ ModelBasedEgoAlo::ModelBasedEgoAlo(const vector<vector<double>>& AvailActions, c
 {
 	//Properly size the aloFeaturePrediction vector, we are creating a model for each feature of the alo state space. Plus one of the reward prediction
 	//Notice the gamma set to 0
-	for (int i = egoSize; i < startState.size(); i++)
+	for (unsigned int i = egoSize; i < startState.size(); i++)
 		aloFeaturePredictionModels.push_back(ModelBasedLearning(AvailActions, StartState, 10, 0, 120));
 	visitedStates.resize(AvailActions.size());
 	
@@ -21,7 +24,7 @@ ModelBasedEgoAlo::ModelBasedEgoAlo(const vector<vector<double>>& AvailActions, c
 {
 	//Properly size the aloFeaturePrediction vector
 	//Notice the gamma set to 0
-	for (int i = egoSize; i < startState.size(); i++)
+	for (unsigned int i = egoSize; i < startState.size(); i++)
 		aloFeaturePredictionModels.push_back(ModelBasedLearning(AvailActions, StartState, DefQ, 0, MaxUps));
 	visitedStates.resize(AvailActions.size());
 };
@@ -35,10 +38,10 @@ ModelBasedEgoAlo::~ModelBasedEgoAlo()
 // aloLearner and get what it predicts the nextState to be 
 ModelBasedEgoAlo::stateType ModelBasedEgoAlo::PredictNextState(stateType state, actionType action)
 {
-	if (state.size() < egoSize)
+	if (state.size() < (unsigned int)egoSize)
 		throw("Invalid state Handed to ModelBasedEgoAlo::PredictNextState, State.size() < NumEgoFeatures, ");
 	stateType aloState;
-	for (int i = egoSize; i < state.size(); i++)
+	for (unsigned int i = egoSize; i < state.size(); i++)
 	{
 		aloState[i-egoSize] = state[i];
 	}
@@ -50,10 +53,10 @@ ModelBasedEgoAlo::stateType ModelBasedEgoAlo::PredictNextState(stateType state, 
 // aloLearner and get what it predicts the next States are
 map<ModelBasedEgoAlo::stateType, double> ModelBasedEgoAlo::PredictNextStates(stateType state, actionType action)
 {
-	if (state.size() < egoSize)
+	if (state.size() < (unsigned int)egoSize)
 		throw("Invalid state Handed to ModelBasedEgoAlo::PredictNextStates, State.size() < NumEgoFeatures, ");
 	stateType aloState;
-	for (int i = egoSize; i < state.size(); i++)
+	for (unsigned int i = egoSize; i < state.size(); i++)
 	{
 		aloState[i - egoSize] = state[i];
 	}
@@ -65,13 +68,13 @@ map<ModelBasedEgoAlo::stateType, double> ModelBasedEgoAlo::PredictNextStates(sta
 //Then hands the alocentric state to the alocentric learner and returns what it predicts the next reward to be.
 double ModelBasedEgoAlo::PredictReward(stateType state, actionType action, stateType newState)
 {
-	if (state.size() < egoSize)
+	if (state.size() < (unsigned int)egoSize)
 		throw("Invalid state Handed to ModelBasedEgoAlo::PredictNextState, State.size() < NumEgoFeatures, ");
-	if(newState.size() < egoSize)
+	if(newState.size() < (unsigned int)egoSize)
 		throw("Invalid state Handed to ModelBasedEgoAlo::PredictNextState, newState.size() < NumEgoFeatures, ");
 
 	stateType aloState, newAloState;
-	for (int i = egoSize; i < state.size(); i++)
+	for (unsigned int i = egoSize; i < state.size(); i++)
 	{
 		aloState[i - egoSize] = state[i];
 		newAloState[i - egoSize] = newState[i];
@@ -112,7 +115,7 @@ double ModelBasedEgoAlo::Update(const StateTransition & transition)
 	
 	if(egoSize)//If there is an ego to be used.
 	{ 
-	for (int i = 0; i < availableActions.size(); i++)
+	for (unsigned int i = 0; i < availableActions.size(); i++)
 	{
 		auto visitedStateIter = visitedStates[i].emplace(alloNewState, 0).first;
 		visitedStateIter->second++; //Regardless of if we have seen before or not, we will increment, so we mark 1, or if not emplaced then whatever was in place.
@@ -125,7 +128,7 @@ double ModelBasedEgoAlo::Update(const StateTransition & transition)
 			if (seenAct != visitedEgoStates.end() && seenAct->second.find(egoNewState) != seenAct->second.end())
 			{		
 					stateType predictedAlo(alloNewState);
-					for (int j = 0; j < aloFeaturePredictionModels.size(); j++)
+					for (unsigned int j = 0; j < aloFeaturePredictionModels.size(); j++)
 						predictedAlo[j] += aloFeaturePredictionModels[j].Value(egoNewState, currAct);//Get all the predicted changes for each alocentric feature	
 
 					PerformanceStats tempStats = aloLearner.GetStats();
@@ -153,7 +156,7 @@ vector<double> ModelBasedEgoAlo::Value(const vector<double>& state, const vector
 //Resets the Allocentric learner, but holds onto the EgoCentric knowledge that was previously learned. This way the agent can be thrown into a new map. 
 void ModelBasedEgoAlo::ResetAllocentric()
 {
-	aloLearner = ModelBasedLearning(availableActions, startState, defQ, gamma, maxUps);
+	aloLearner = ModelBasedLearning(availableActions, startState, defQ, gamma,(int)maxUps);
 }
 
 PerformanceStats & ModelBasedEgoAlo::GetStats()
@@ -180,7 +183,7 @@ inline void ModelBasedEgoAlo::updatePredictionModels(const stateType& oldEgo, co
 	if (egoSize)
 	{
 		stateType dummyNewState = { numeric_limits<double>::lowest() };
-		for (int i = 0; i < aloFeaturePredictionModels.size(); i++)
+		for (unsigned int i = 0; i < aloFeaturePredictionModels.size(); i++)
 		{
 			//It doesn't need to learn of an S' as there is no continuity on the ego side of things, so we give a dummy state. 
 			//The reward is what it is predicting, but reward is actually the feature change.

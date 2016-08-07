@@ -146,6 +146,7 @@
       <DataExecutionPrevention />
       <ImportLibrary>.\Debug/human.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -254,6 +255,7 @@
       <DataExecutionPrevention />
       <ImportLibrary>.\Release/human.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>

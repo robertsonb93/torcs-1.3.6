@@ -6,6 +6,8 @@
   Else you must face the wrath of your program compiling like poopoo
   */
 
+
+
 //stdafx is a known as a pre-comnpiled header,
 //It lets the compiler only have to compile each 
 //header file once in the stdafx
@@ -17,6 +19,7 @@
 //to mean the entire project needs recompiling
 
 #include <Windows.h>
+#include <fstream>
 #include <vector>
 #include <map>
 #include <string>
@@ -26,6 +29,18 @@
 #include <unordered_map>
 #include <queue>
 #include <list>
+#include "boost\type_traits\is_abstract.hpp" 
+#include "boost\archive\binary_iarchive.hpp"
+#include "boost\archive\binary_oarchive.hpp"
+//#include "boost\archive\polymorphic_text_oarchive.hpp"
+//#include "boost\archive\polymorphic_text_iarchive.hpp"
+#include "boost\serialization\map.hpp"
+#include <boost/serialization/unordered_map.hpp>
+#include <boost/serialization/unordered_set.hpp>
+#include <boost\serialization\vector.hpp>
+#include "boost\serialization\access.hpp"
+
+#include <boost/serialization/export.hpp>
 
 
 //From the Boost Library For serializing different types of STL objects
@@ -64,5 +79,14 @@
 #include "EpsilonGreedy.h"
 //#include "SoftmaxPolicy.h"
 #include "OptimalPolicy.h"
+
+//BOOST_SERIALIZATION_ASSUME_ABSTRACT(ActionValue);
+////BOOST_CLASS_EXPORT_GUID(ActionValue , "ActionValue");
+//BOOST_SERIALIZATION_ASSUME_ABSTRACT(ModelBasedBase);
+//BOOST_CLASS_EXPORT_GUID(ModelBasedBase, "ModelBasedBase");
+//BOOST_SERIALIZATION_ASSUME_ABSTRACT(ModelFreeBase);
+//BOOST_CLASS_EXPORT_GUID(ModelFreeBase, "ModelFreeBase");
+
+
 
 #endif

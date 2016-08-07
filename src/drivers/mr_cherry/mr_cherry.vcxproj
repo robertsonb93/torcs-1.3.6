@@ -117,6 +117,7 @@
       <DataExecutionPrevention>false</DataExecutionPrevention>
       <ImportLibrary>.\$(Configuration)/mr_cherry.lib</ImportLibrary>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <PostBuildEvent>
       <Command>copy $(TargetDir)*.dll $(SolutionDir)runtimed\drivers\mr_cherry</Command>
@@ -169,6 +170,7 @@
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>false</DataExecutionPrevention>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>

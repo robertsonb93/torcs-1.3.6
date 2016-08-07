@@ -138,6 +138,7 @@
       <DataExecutionPrevention />
       <ImportLibrary>.\Release/robottools.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -251,6 +252,7 @@ copy $(TargetDir)*.lib $(SolutionDir)export\lib
       <DataExecutionPrevention />
       <ImportLibrary>.\Debug/robottools.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>

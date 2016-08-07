@@ -144,6 +144,7 @@
       <DataExecutionPrevention />
       <ImportLibrary>.\Release/tita.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -255,6 +256,7 @@
       <DataExecutionPrevention />
       <ImportLibrary>.\Debug/tita.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>

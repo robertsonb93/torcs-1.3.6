@@ -111,9 +111,6 @@
     <ClInclude Include="ModelBasedLearning.h">
       <Filter>Header Files\ActionValue</Filter>
     </ClInclude>
-    <ClInclude Include="HashVecDoubles.h">
-      <Filter>Header Files\Agent</Filter>
-    </ClInclude>
     <ClInclude Include="InterpretorBase.h">
       <Filter>Header Files\Interpretors</Filter>
     </ClInclude>
@@ -128,6 +125,9 @@
     </ClInclude>
     <ClInclude Include="EgoAloMazeInterpretor.h">
       <Filter>Header Files\Interpretors</Filter>
+    </ClInclude>
+    <ClInclude Include="HashVecDoubles.h">
+      <Filter>Header Files\Auxilliaries</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

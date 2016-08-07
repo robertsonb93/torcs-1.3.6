@@ -146,6 +146,7 @@
       <DataExecutionPrevention />
       <ImportLibrary>.\Debug/track.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -257,6 +258,7 @@
       <DataExecutionPrevention />
       <ImportLibrary>.\Release/track.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>

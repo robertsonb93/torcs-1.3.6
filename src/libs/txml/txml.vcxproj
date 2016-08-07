@@ -142,6 +142,7 @@
       <ImportLibrary>.\Debug/txml.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
       <AllowIsolation>true</AllowIsolation>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -256,6 +257,7 @@ copy $(TargetDir)*.lib $(SolutionDir)export\libd
       <ImportLibrary>.\Release/txml.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
       <AllowIsolation>true</AllowIsolation>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>

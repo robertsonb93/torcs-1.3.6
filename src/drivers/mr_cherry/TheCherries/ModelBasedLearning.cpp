@@ -1,6 +1,8 @@
 
 #include "stdafx.h"
 #include "ModelBasedLearning.h"
+//BOOST_CLASS_EXPORT(ModelBasedLearning);
+BOOST_CLASS_EXPORT_IMPLEMENT(ModelBasedLearning)
 
 
 

@@ -139,6 +139,7 @@
       <DataExecutionPrevention />
       <ImportLibrary>.\Release/tgf.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -252,6 +253,7 @@ copy $(TargetDir)*.lib ..\..\..\export\lib
       <DataExecutionPrevention />
       <ImportLibrary>.\Debug/tgf.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
