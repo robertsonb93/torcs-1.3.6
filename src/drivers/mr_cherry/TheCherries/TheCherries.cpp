@@ -45,12 +45,9 @@ extern "C" int _cdecl cherryEntry(const double* AvailActionsInput, const int Act
 	StartStateVect.assign(StartState, StartState + SSSize);
 
 	Agent = new AgentSingle();
-	//Agent->setActionValue(new ModelBasedEgoAlo(AvailableActions, StartStateVect, 6));
-	Agent->setActionValue(new ModelBasedEgoAlo(AvailableActions, StartStateVect, 6,1,0.99999,120));
+	Agent->setActionValue(new ModelBasedLearning(AvailableActions, StartStateVect));
 	Agent->setPolicy(new EpsilonGreedy(0.98));
 	Agent->setPossibleActions(AvailableActions);
-	//Agent->setActionValue(new ModelBasedEgoAlo(AvailableActions, StartStateVect, NumEgoFeatures));
-	
 	ActionSz = ActionSize;
 	StateSz = SSSize;
 	Agent->SetState(StartStateVect);

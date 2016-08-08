@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE params SYSTEM "C:/Users/User/Documents/Coding/Torcs/torcs-1.3.6/runtime/config/params.dtd">
+<?xml-stylesheet type="text/xsl" href="file:///C:/Users/User/Documents/Coding/Torcs/torcs-1.3.6/runtime/config/style.xsl"?>
+
+<params name="Results">
+  <section name="Header">
+    <attnum name="date" val="1.46879e+009"/>
+  </section>
+
+  <section name="Current">
+    <attnum name="current track" val="1"/>
+    <attnum name="current race" val="1"/>
+    <attnum name="current driver" val="1"/>
+  </section>
+
+  <section name="Aalborg">
+    <section name="Drivers">
+      <section name="1">
+        <attstr name="dll name" val="mr_cherry"/>
+        <attnum name="index" val="8"/>
+      </section>
+
+    </section>
+
+    <section name="Results">
+      <section name="Practice">
+        <attstr name="driver name" val="mr_cherry 9"/>
+        <section name="1">
+          <attnum name="time" val="79.338"/>
+          <attnum name="best lap time" val="0"/>
+          <attnum name="top speed" val="62.6041"/>
+          <attnum name="bottom speed" val="7.24908"/>
+          <attnum name="dammages" val="0"/>
+        </section>
+
+        <section name="2">
+          <attnum name="time" val="75.226"/>
+          <attnum name="best lap time" val="0"/>
+          <attnum name="top speed" val="60.6823"/>
+          <attnum name="bottom speed" val="5.88218"/>
+          <attnum name="dammages" val="0"/>
+        </section>
+
+        <section name="3">
+          <attnum name="time" val="107.366"/>
+          <attnum name="best lap time" val="0"/>
+          <attnum name="top speed" val="57.0475"/>
+          <attnum name="bottom speed" val="0.0113746"/>
+          <attnum name="dammages" val="0"/>
+        </section>
+
+        <section name="4">
+          <attnum name="time" val="82.356"/>
+          <attnum name="best lap time" val="0"/>
+          <attnum name="top speed" val="52.8705"/>
+          <attnum name="bottom speed" val="6.087"/>
+          <attnum name="dammages" val="0"/>
+        </section>
+
+        <section name="5">
+          <attnum name="time" val="82.584"/>
+          <attnum name="best lap time" val="0"/>
+          <attnum name="top speed" val="50.7581"/>
+          <attnum name="bottom speed" val="6.04389"/>
+          <attnum name="dammages" val="0"/>
+        </section>
+
+        <section name="6">
+          <attnum name="time" val="170.358"/>
+          <attnum name="best lap time" val="0"/>
+          <attnum name="top speed" val="48.9992"/>
+          <attnum name="bottom speed" val="-0.0408521"/>
+          <attnum name="dammages" val="0"/>
+        </section>
+
+        <section name="7">
+          <attnum name="time" val="86.852"/>
+          <attnum name="best lap time" val="0"/>
+          <attnum name="top speed" val="52.5604"/>
+          <attnum name="bottom speed" val="3.32857"/>
+          <attnum name="dammages" val="0"/>
+        </section>
+
+        <section name="8">
+          <attnum name="time" val="85.904"/>
+          <attnum name="best lap time" val="0"/>
+          <attnum name="top speed" val="53.7321"/>
+          <attnum name="bottom speed" val="5.36238"/>
+          <attnum name="dammages" val="0"/>
+        </section>
+
+        <section name="9">
+          <attnum name="time" val="83.694"/>
+          <attnum name="best lap time" val="0"/>
+          <attnum name="top speed" val="53.8008"/>
+          <attnum name="bottom speed" val="11.9992"/>
+          <attnum name="dammages" val="0"/>
+        </section>
+
+        <section name="10">
+          <attnum name="time" val="82.23"/>
+          <attnum name="best lap time" val="0"/>
+          <attnum name="top speed" val="53.8666"/>
+          <attnum name="bottom speed" val="8.68582"/>
+          <attnum name="dammages" val="0"/>
+        </section>
+
+        <section name="11">
+          <attnum name="time" val="84.74"/>
+          <attnum name="best lap time" val="0"/>
+          <attnum name="top speed" val="53.948"/>
+          <attnum name="bottom speed" val="9.16973"/>
+          <attnum name="dammages" val="0"/>
+        </section>
+
+        <section name="12">
+          <attnum name="time" val="86.528"/>
+          <attnum name="best lap time" val="0"/>
+          <attnum name="top speed" val="54.5753"/>
+          <attnum name="bottom speed" val="2.69937"/>
+          <attnum name="dammages" val="0"/>
+        </section>
+
+        <section name="13">
+          <attnum name="time" val="94.256"/>
+          <attnum name="best lap time" val="0"/>
+          <attnum name="top speed" val="55.0328"/>
+          <attnum name="bottom speed" val="-9.97398"/>
+          <attnum name="dammages" val="0"/>
+        </section>
+
+        <section name="14">
+          <attnum name="time" val="92.124"/>
+          <attnum name="best lap time" val="0"/>
+          <attnum name="top speed" val="54.0635"/>
+          <attnum name="bottom speed" val="-2.12465"/>
+          <attnum name="dammages" val="0"/>
+        </section>
+
+        <section name="15">
+          <attnum name="time" val="123.782"/>
+          <attnum name="best lap time" val="0"/>
+          <attnum name="top speed" val="54.0278"/>
+          <attnum name="bottom speed" val="-0.42125"/>
+          <attnum name="dammages" val="0"/>
+        </section>
+
+        <section name="16">
+          <attnum name="time" val="88.938"/>
+          <attnum name="best lap time" val="0"/>
+          <attnum name="top speed" val="55.139"/>
+          <attnum name="bottom speed" val="3.03278"/>
+          <attnum name="dammages" val="0"/>
+        </section>
+
+        <section name="17">
+          <attnum name="time" val="102.678"/>
+          <attnum name="best lap time" val="0"/>
+          <attnum name="top speed" val="55.1984"/>
+          <attnum name="bottom speed" val="0.0893012"/>
+          <attnum name="dammages" val="0"/>
+        </section>
+
+      </section>
+
+    </section>
+
+  </section>
+
+</params>

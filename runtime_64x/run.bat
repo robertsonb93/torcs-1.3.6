@@ -1,0 +1,1 @@
+start ".\" wtorcs.exe -nofuel -nodamage -nolaptime

@@ -83,6 +83,8 @@
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>false</LinkIncremental>
     <GenerateManifest>false</GenerateManifest>
+    <OutDir>.\$(Configuration)\</OutDir>
+    <IntDir>.\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>.\Release\</OutDir>
@@ -97,6 +99,8 @@
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>false</LinkIncremental>
     <GenerateManifest>false</GenerateManifest>
+    <OutDir>.\$(Configuration)\</OutDir>
+    <IntDir>.\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
@@ -145,6 +149,7 @@
       <DataExecutionPrevention />
       <ImportLibrary>.\Debug/berniw2.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -166,7 +171,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(TORCS_SRC)\interfaces;$(TORCS_SRC)\windows\include\ogg;$(TORCS_SRC)\windows\include\GL;$(TORCS_SRC)\windows\include\AL;$(TORCS_SRC)\windows\include;$(TORCS_SRC)\windows\dll;$(TORCS_SRC)\tools\trackgen;$(TORCS_SRC)\tools\texmapper;$(TORCS_SRC)\tools\package\specfiles;$(TORCS_SRC)\tools\nfsperf;$(TORCS_SRC)\tools\nfs2ac;$(TORCS_SRC)\tools\accc;$(TORCS_SRC)\raceman;$(TORCS_SRC)\modules\track;$(TORCS_SRC)\modules\telemetry;$(TORCS_SRC)modules\simu\simuv2\SOLID-2.0\include\3D;$(TORCS_SRC)modules\simu\simuv2\SOLID-2.0\include\SOLID;$(TORCS_SRC)\modules\simu\simuv2\SOLID-2.0\src;$(TORCS_SRC)\modules\simu\simuv2;$(TORCS_SRC)\modules\graphic\ssggraph;$(TORCS_SRC)\windows;$(TORCS_SRC);$(TORCS_SRC)\windows\lib;$(TORCS_SRC)\windows\include\vorbis;$(TORCS_SRC)\windows\include\plib;$(TORCS_LIBS)\musicplayer;$(TORCS_LIBS)\tgf;$(TORCS_LIBS)\learning;$(TORCS_LIBS)\tgfclient;$(TORCS_LIBS)\robottools;$(TORCS_LIBS)\client;$(TORCS_LIBS)\confscreens;$(TORCS_LIBS)\portability;$(TORCS_LIBS)\math;$(TORCS_LIBS)\racescreens;$(TORCS_LIBS)\raceengineclient;$(TORCS_LIBS)\tmath;$(TORCS_LIBS);$(TORCS_LIBS)\txml\genmtab;$(TORCS_LIBS)\txml;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;BERNIW2_EXPORTS;DEBUG;DEBUG_OUT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN64;_DEBUG;WIN32;_DEBUG;_WINDOWS;_USRDLL;BERNIW2_EXPORTS;DEBUG;DEBUG_OUT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeaderOutputFile>.\Debug/berniw2.pch</PrecompiledHeaderOutputFile>
@@ -177,6 +182,7 @@
       <WarningLevel>Level2</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <OmitFramePointers>false</OmitFramePointers>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -207,7 +213,7 @@
       <OutputFile>.\Debug/berniw2.bsc</OutputFile>
     </Bscmake>
     <PostBuildEvent>
-      <Command>copy $(TargetDir)*.dll $(SolutionDir)runtimed\drivers\berniw2</Command>
+      <Command>copy $(TargetDir)*.dll $(SolutionDir)runtimed_64x\drivers\berniw2</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -256,6 +262,7 @@
       <DataExecutionPrevention />
       <ImportLibrary>.\Release/berniw2.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -278,7 +285,7 @@
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>$(TORCS_SRC)\interfaces;$(TORCS_SRC)\windows\include\ogg;$(TORCS_SRC)\windows\include\GL;$(TORCS_SRC)\windows\include\AL;$(TORCS_SRC)\windows\include;$(TORCS_SRC)\windows\dll;$(TORCS_SRC)\tools\trackgen;$(TORCS_SRC)\tools\texmapper;$(TORCS_SRC)\tools\package\specfiles;$(TORCS_SRC)\tools\nfsperf;$(TORCS_SRC)\tools\nfs2ac;$(TORCS_SRC)\tools\accc;$(TORCS_SRC)\raceman;$(TORCS_SRC)\modules\track;$(TORCS_SRC)\modules\telemetry;$(TORCS_SRC)modules\simu\simuv2\SOLID-2.0\include\3D;$(TORCS_SRC)modules\simu\simuv2\SOLID-2.0\include\SOLID;$(TORCS_SRC)\modules\simu\simuv2\SOLID-2.0\src;$(TORCS_SRC)\modules\simu\simuv2;$(TORCS_SRC)\modules\graphic\ssggraph;$(TORCS_SRC)\windows;$(TORCS_SRC);$(TORCS_SRC)\windows\lib;$(TORCS_SRC)\windows\include\vorbis;$(TORCS_SRC)\windows\include\plib;$(TORCS_LIBS)\musicplayer;$(TORCS_LIBS)\tgf;$(TORCS_LIBS)\learning;$(TORCS_LIBS)\tgfclient;$(TORCS_LIBS)\robottools;$(TORCS_LIBS)\client;$(TORCS_LIBS)\confscreens;$(TORCS_LIBS)\portability;$(TORCS_LIBS)\math;$(TORCS_LIBS)\racescreens;$(TORCS_LIBS)\raceengineclient;$(TORCS_LIBS)\tmath;$(TORCS_LIBS);$(TORCS_LIBS)\txml\genmtab;$(TORCS_LIBS)\txml;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;BERNIW2_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN64;WIN32;NDEBUG;_WINDOWS;_USRDLL;BERNIW2_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -289,6 +296,7 @@
       <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
       <WarningLevel>Level2</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OmitFramePointers>false</OmitFramePointers>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -317,7 +325,7 @@
       <OutputFile>.\Release/berniw2.bsc</OutputFile>
     </Bscmake>
     <PostBuildEvent>
-      <Command>copy $(TargetDir)*.dll $(SolutionDir)runtime\drivers\berniw2</Command>
+      <Command>copy $(TargetDir)*.dll $(SolutionDir)runtime_64x\drivers\berniw2</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

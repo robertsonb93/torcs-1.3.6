@@ -61,6 +61,7 @@ typedef int(__cdecl *MYPROC)(LPWSTR);
 typedef double* (__cdecl *PerformAction)();
 typedef void(__cdecl *PerformUpdate)(const double* StatePrime, const double Reward);
 typedef void(__cdecl *cherryEntry)(const double* AvailActions, const int ActSize, const int AAsz, const double* StartState, const int SSsz);
+
 static PerformAction CherryAction;
 static cherryEntry EnterTheCherry;
 static PerformUpdate CherryUpdate;
@@ -238,10 +239,10 @@ double* Driver::setAvailActions()
 //Will be used for setting the Start State and also for updating what the current state is.
 double* Driver::setState()
 {
-	stateSize = 11;
+	
 	float tm = fabs(car->_trkPos.toMiddle);//absolute distance from middle, 
 	float w = car->pub.trkPos.seg->width / WIDTHDIV;// how far from middle we will allow
-	
+	stateSize = 5;
 	double* ret = new double[stateSize];
 	int i = 0;
 
@@ -250,22 +251,25 @@ double* Driver::setState()
 
 	//std::cout << "Width Percent = " << (int)(car->_trkPos.toMiddle / (car->pub.trkPos.seg->width / WIDTHDIV) * 100) / 10 << std::endl;
 	//EgoStates
-	double EgoDiscretize = 10, AloDiscretize = 100;
+	double EgoDiscretize = 10, AloDiscretize = 10;
 	
-	ret[i++] = (car->pub.trkPos.seg->next->type);
-	ret[i++] = 0;
-	ret[i++] = 0;
-	ret[i++] = (double)((int)(car->_speed_X)); std::cout << "EgoSpeed = " << ret[i - 1] << std::endl;
-	ret[i++] = (double)((int)((tm / w) * EgoDiscretize)) / EgoDiscretize; std::cout << "track percent = " << ret[i - 1] << std::endl;
-	ret[i++] = (int)(angle * 180 / 22.5); std::cout << "Ego Angle = " << ret[i - 1] << std::endl;// EgoDiscretize)) / EgoDiscretize;
+	//ret[i++] = (car->pub.trkPos.seg->next->type);
+	//ret[i++] = 0;
+	//ret[i++] = 0;
+	//ret[i++] = ((int)(car->_speed_X)/3)*3; std::cout << "EgoSpeed = " << ret[i - 1] << std::endl;
+	//ret[i++] = ((int)((tm / w) * EgoDiscretize)) / EgoDiscretize; 
+	//if (ret[i - 1] > 1.1)ret[i - 1] = 1.1; else if (ret[i - 1] < -1.1)ret[i - 1] = -1.1; std::cout << "track percent = " << ret[i - 1] << std::endl;
+	//ret[i++] = (int)(angle * 180 / 22.5); std::cout << "Ego Angle = " << ret[i - 1] << std::endl;// EgoDiscretize)) / EgoDiscretize;
 
 	//Alo States
-	ret[i++] = (car->pub.trkPos.seg->id);
+	ret[i++] = (car->pub.trkPos.seg->id); std::cout << ret[i - 1] << std::endl;
 	ret[i++] = (int)(getDistToSegeEnd()*AloDiscretize / AloDiscretize);	//std::cout << "percent of segend: " << ret[i - 1] << std::endl;
-	ret[i++] = (double)((int)(car->_speed_X * AloDiscretize))/ AloDiscretize;// std::cout << "speed_X: " << ret[i - 1] << std::endl;
-	ret[i++] = (double)((int)(angle  * AloDiscretize))/ AloDiscretize; //std::cout << "angle: " << ret[i - 1] << std::endl;
-	ret[i++] = (double)((int)((tm / w) *AloDiscretize))/ AloDiscretize;// std::cout << "tm / w: " << ret[i - 1] << std::endl;
+	ret[i++] = ((int)(car->_speed_X ));// std::cout << "speed_X: " << ret[i - 1] << std::endl;
+	ret[i++] = ((int)(angle * 180 / 22.5)); //std::cout << "angle: " << ret[i - 1] << std::endl;
+	ret[i++] = ((int)((tm / w) *AloDiscretize))/ AloDiscretize;// std::cout << "tm / w: " << ret[i - 1] << std::endl;
+	if (ret[i - 1] > 1.1)ret[i - 1] = 1.1; else if (ret[i - 1] < -1.1)ret[i - 1] = -1.1;
 
+	
 
 
 	return ret;//Remember to change the Cherries and and stateSize(top of this function)

@@ -1,0 +1,6 @@
+LIBRARY	mr_cherry
+
+SECTIONS .data READ WRITE
+
+EXPORTS
+	mr_cherry
