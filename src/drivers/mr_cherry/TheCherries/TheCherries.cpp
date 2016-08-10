@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "AgentSingle.h"
 #include "ModelBasedEgoAlo.h"
+#include "QLearning.h"
 #include "EpsilonGreedy.h"
 #include "OptimalPolicy.h"
 #include <iostream>
@@ -41,12 +42,12 @@ extern "C" int _cdecl cherryEntry(const double* AvailActionsInput, const int Act
 	//	cout << endl;
 	//}
 
-
 	StartStateVect.assign(StartState, StartState + SSSize);
 
 	Agent = new AgentSingle();
-	Agent->setActionValue(new ModelBasedLearning(AvailableActions, StartStateVect));
-	Agent->setPolicy(new EpsilonGreedy(0.98));
+	//Agent->setActionValue(new ModelBasedLearning(AvailableActions, StartStateVect,20,0.01,10000));
+	Agent->setActionValue(new QLearning(AvailableActions));
+	Agent->setPolicy(new OptimalPolicy());
 	Agent->setPossibleActions(AvailableActions);
 	ActionSz = ActionSize;
 	StateSz = SSSize;
