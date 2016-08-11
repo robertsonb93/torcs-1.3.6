@@ -1,7 +1,5 @@
 #include "stdafx.h"
 #include "AgentSingle.h"
-#include "ModelBasedLearning.h"
-
 
 AgentSingle::AgentSingle()
 {
@@ -80,15 +78,16 @@ void AgentSingle::SaveLearnerArchive(string filename)
 	std::ofstream ofs(filename, ios::out | ios::binary);
 	if(ofs.is_open())
 	{
-		std::cout << " AgentSingle::SaveLearnerArchive - Opened OFS: " << filename << std::endl;
 		boost::archive::binary_oarchive oa{ ofs };
-		
-	
-		std::cout << "Text Archive Opened on ofs" << std::endl; 
 		{
-			oa.register_type<ModelBasedLearning>();
-			ModelBasedLearning temp(GetAvailAction(), GetState());
-			oa << temp;
+			try
+			{
+				oa << actionValue;
+			}
+			catch (std::exception &e)
+			{
+				std::cout << "Exception thrown from saving: "<<e.what() << std::endl;
+			}
 		}
 		std::cout << "Text Archive Finished on ofs" << std::endl;
 		ofs.close();
@@ -103,10 +102,26 @@ void AgentSingle::SaveLearnerArchive(string filename)
 void  AgentSingle::LoadLearnerArchive(string filename)
 {
 
-	std::ifstream ifs(filename);
-
-	boost::archive::binary_iarchive ia{ifs};
-	ia >> actionValue;
+	std::cout << "Entered AgentSingle::LoadLearnerArchive" << std::endl;
+	std::ifstream ifs(filename, ios::in | ios::binary);
+	if (ifs.is_open())
+	{
+		boost::archive::binary_iarchive ia{ ifs };
+		{
+			try
+			{
+				ia >> actionValue;
+			}
+			catch (std::exception &e)
+			{
+				std::cout << "Exception thrown from saving: " << e.what() << std::endl;
+			}
+		}
+		std::cout << "Text Archive Finished on ofs" << std::endl;
+		ifs.close();
+	}
+	else
+		std::cout << "FAILED _____ AgentSingle::SaveLearnerArchive - Opened OFS: " << filename << std::endl;
 
 }
 

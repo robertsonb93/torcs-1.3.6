@@ -29,12 +29,12 @@
 		 
 	private:
 
-		////Serialization
+		//Serialization
 		friend class boost::serialization::access;
-		//template<class Archive>
-	 //void serialize(Archive & ar, const unsigned int version) {
-		// { cout << endl << "Entered ActionValue Serialize" << endl;
-		// };
+		template<class Archive>
+	inline void serialize(Archive & ar, const unsigned int version) 
+		 { cout << endl << "Entered ActionValue Serialize" << endl;
+		 };
 	 
 
 		//Members//

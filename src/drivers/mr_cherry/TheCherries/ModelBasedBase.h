@@ -18,14 +18,12 @@
 	private:
 	//	//Serialization
 		friend class boost::serialization::access;
-	//	template<class Archive>
-	//	void serialize(Archive & ar, const unsigned int version) 
-	//	{ cout << endl << "Entered ModelBasedBase Serialize" << endl; 
-	//	ar & boost::serialization::base_object<ActionValue>(*this); 
-	//	cout << endl << "Entered ModelBasedBase Serialize" << endl;
-	//	};
-
-
+		template<class Archive>
+		void serialize(Archive & ar, const unsigned int version) 
+		{ cout << endl << "Entered ModelBasedBase Serialize" << endl; 
+		ar & boost::serialization::base_object<ActionValue>(*this); 
+		cout << endl << "Entered ModelBasedBase Serialize" << endl;
+		};
 	};
 
 	BOOST_SERIALIZATION_ASSUME_ABSTRACT(ModelBasedBase);

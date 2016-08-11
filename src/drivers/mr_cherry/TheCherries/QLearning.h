@@ -23,11 +23,11 @@
 
 	private:
 
-		//Serialization
-		friend class boost::serialization::access;
-		template<class Archive>
-		void serialize(Archive & ar, const unsigned int version);
-
+//		//Serialization
+///*		friend class boost::serialization::access;
+//		template<class Archive>
+//	*/	void serialize(Archive & ar, const unsigned int version);
+//
 		//Members/
 		double alpha;
 		double gamma;
@@ -44,8 +44,8 @@
 
 #endif
 
-	template<class Archive>
-	inline void QLearning::serialize(Archive & ar, const unsigned int version)
-	{
-		ar & table;
-	}
+	//template<class Archive>
+	//inline void QLearning::serialize(Archive & ar, const unsigned int version)
+	//{
+	//	ar & table;
+	//}

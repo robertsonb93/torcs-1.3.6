@@ -8,8 +8,6 @@
 #include "QLearning.h"
 #include "PolicyHeaders.h"
 
-	
-
 typedef OptimalPolicy _DefaultPolicyType;
 typedef QLearning _DefaultAVType;
 

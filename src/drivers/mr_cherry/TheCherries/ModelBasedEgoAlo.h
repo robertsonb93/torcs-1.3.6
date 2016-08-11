@@ -38,6 +38,8 @@ public:
 	vector<double> Value(const vector<double>& state, const vector<vector<double>>& actions);
 	void ResetAllocentric();
 
+
+
 	//Get/Set the Performance Stats
 	PerformanceStats& GetStats();
 	void SetStats(PerformanceStats& PS);
@@ -46,11 +48,6 @@ public:
 private:
 
 	void updatePredictionModels(const stateType& oldEgo,const actionType& act,const stateType& newAlo,const stateType& oldAlo,const double rew);
-
-	//Serializitation
-	friend class boost::serialization::access;
-	template<class Archive>
-	void serialize(Archive & ar, const unsigned int version);
 
 	//****MEMBERS****//
 	ModelBasedLearning aloLearner,rewardPredictionModel;
@@ -72,22 +69,22 @@ private:
 };
 #endif
 
-template<class Archive>
-inline void ModelBasedEgoAlo::serialize(Archive & ar, const unsigned int version)//Does not provide the start state, parameters (except egoSize)
-{
-	cerr <<endl<< "Entered ModelBasedEgoAlo Serialize" << endl;
+//template<class Archive>
+//inline void ModelBasedEgoAlo::serialize(Archive & ar, const unsigned int version)//Does not provide the start state, parameters (except egoSize)
+////{
+//	cerr <<endl<< "Entered ModelBasedEgoAlo Serialize" << endl;
+//
+//	//ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(ActionValue);
+//	//ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(ModelBasedBase);
+//	//ar & boost::serialization::base_object<ModelBasedBase>;
+//	ar & boost::serialization::make_nvp("Alo",aloLearner);
+//	ar & availableActions;
+//	ar & rewardPredictionModel;
+//	ar & aloFeaturePredictionModels;
+//	ar & visitedStates;
+//	ar & visitedEgoStates;
+//	ar & egoSize;
+//	cerr << endl << "finished ModelBasedEgoAlo Serialize" << endl;
+//}
 
-	//ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(ActionValue);
-	//ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(ModelBasedBase);
-	//ar & boost::serialization::base_object<ModelBasedBase>;
-	ar & boost::serialization::make_nvp("Alo",aloLearner);
-	ar & availableActions;
-	ar & rewardPredictionModel;
-	ar & aloFeaturePredictionModels;
-	ar & visitedStates;
-	ar & visitedEgoStates;
-	ar & egoSize;
-	cerr << endl << "finished ModelBasedEgoAlo Serialize" << endl;
-}
-
-BOOST_CLASS_EXPORT_KEY(ModelBasedEgoAlo);
+//BOOST_CLASS_EXPORT_KEY(ModelBasedEgoAlo);

@@ -1,7 +1,11 @@
-#define _HAS_ITERATOR_DEBUGGING 1
+//#define _HAS_ITERATOR_DEBUGGING 1
+
 #include "stdafx.h"
+
+
 #include "AgentSingle.h"
 #include "ModelBasedEgoAlo.h"
+
 #include "EpsilonGreedy.h"
 #include "OptimalPolicy.h"
 #include <iostream>
@@ -94,6 +98,7 @@ extern "C" void PerformUpdate(const double* StatePrime, const double Reward)
 
 extern "C" void LoadLearner()
 {
+	cout << "entered Load Learner" << endl;
 	string filename = "C:\\Users\\User\\Documents\\Coding\\Torcs\\torcs-1.3.6\\runtime\\drivers\\mr_cherry\\TheCherries\\model.txt";
 	Agent->LoadLearnerArchive(filename);
 }

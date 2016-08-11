@@ -95,14 +95,14 @@ Driver::Driver(int index)
 {
 	INDEX = index;
 	DoDatDLL();
-
+	
 }
 
 Driver::~Driver()
 {
 
 	std::cout << "Entered ~Driver" << std::endl;
-
+	Save();
 
 	delete opponents;
 	delete pit;
@@ -129,6 +129,7 @@ Driver::~Driver()
 //Will also 
 void Driver::initTrack(tTrack * t, void * carHandle, void ** carParmHandle, tSituation * situation)
 {
+
 	//track takes the value of pointer
 	track = t;
 
@@ -220,6 +221,8 @@ void Driver::newRace(tCarElt * car, tSituation * situation)
 
 	lastLap = car->race.laps;
 	oldSeg = car->pub.trkPos.seg->id;
+
+	Load();
 }
 
 //Use this for determining what your Available actions are, this function returns a double[], where an action is size n, subset of the array
@@ -338,7 +341,7 @@ void Driver::drive(tSituation * situation)
 			car->_clutchCmd = getClutch();
 		}
 	}
-	Save();
+
 }
 
 // Set pitstop commands.

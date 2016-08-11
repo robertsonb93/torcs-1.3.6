@@ -1,9 +1,7 @@
 
 #include "stdafx.h"
 #include "ModelBasedLearning.h"
-//BOOST_CLASS_EXPORT(ModelBasedLearning);
 BOOST_CLASS_EXPORT_IMPLEMENT(ModelBasedLearning)
-
 
 
 ModelBasedLearning::ModelBasedLearning(const vector<vector<double>>& AvailActions, const vector<double>& StartState)
@@ -14,8 +12,6 @@ ModelBasedLearning::ModelBasedLearning(const vector<vector<double>>& AvailAction
 	{
 		defaultMap[act] = defaultQ;
 	}
-	
-
 }
 
 ModelBasedLearning::ModelBasedLearning(const vector<vector<double>>& AvailActions, const vector<double>& StartState, double DefQ, double gam, int maxUps)
@@ -348,5 +344,4 @@ inline double ModelBasedLearning::calcUpdate_value(const stateType& state)
 
 	return valueChange;
 }
-
 

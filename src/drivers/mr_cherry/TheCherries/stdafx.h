@@ -29,28 +29,20 @@
 #include <unordered_map>
 #include <queue>
 #include <list>
+
+
+#include "boost\serialization\access.hpp"
+
+#include <boost/serialization/export.hpp>
+#include <boost/config.hpp>
 #include "boost\type_traits\is_abstract.hpp" 
 #include "boost\archive\binary_iarchive.hpp"
 #include "boost\archive\binary_oarchive.hpp"
-//#include "boost\archive\polymorphic_text_oarchive.hpp"
-//#include "boost\archive\polymorphic_text_iarchive.hpp"
 #include "boost\serialization\map.hpp"
 #include <boost/serialization/unordered_map.hpp>
 #include <boost/serialization/unordered_set.hpp>
 #include <boost\serialization\vector.hpp>
-#include "boost\serialization\access.hpp"
 
-#include <boost/serialization/export.hpp>
-
-
-//From the Boost Library For serializing different types of STL objects
-//#include "vector.hpp" //Serialize a vector
-//#include "map.hpp"
-//#include "hash_map.hpp"
-//
-////After a class is serialized, it must be saved as an archive
-//#include "text_iarchive.hpp";
-//#include "text_oarchive.hpp";
 
 //You can uncomment any these if they are considered stable/final
 

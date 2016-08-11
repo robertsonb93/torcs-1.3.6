@@ -4,6 +4,8 @@
 
 
 #include "stdafx.h"
+
+
 #include "ModelBasedBase.h"
 
 
@@ -49,12 +51,11 @@ private:
 	map<vector<double>, double>::iterator findMaxPriority();
 	double calcUpdate_value(const stateType& iterMax);
 
-private:
 
 	//Serialization
 	friend class boost::serialization::access;
 	template<class Archive>
-	void serialize(Archive & ar, const unsigned int version);
+	inline void serialize(Archive & ar, const unsigned int version);
 
 	/******MEMBERS******/
 	
@@ -74,12 +75,12 @@ private:
 	map<actionType, double> defaultMap;//Used for creating a quick table of default values for the Qtable
 };
 
+
 template<class Archive>
 inline void ModelBasedLearning::serialize(Archive & ar, const unsigned int version)
 {
 	cerr << "ENTERED MODEL BASED LEARNING SERIALIZE" << endl;
-	//ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(ActionValue);
-	//ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(ModelBasedBase);
+	ar & boost::serialization::base_object<ModelBasedBase>(*this);
 	ar & TR;
 	ar & QTable;
 	ar & predecessors;
@@ -87,6 +88,10 @@ inline void ModelBasedLearning::serialize(Archive & ar, const unsigned int versi
 	cerr << " ModelBasedLearning Serialize Complete" << endl << endl;
 }
 
+
 BOOST_CLASS_EXPORT_KEY(ModelBasedLearning);
+
+
+
 
 #endif
