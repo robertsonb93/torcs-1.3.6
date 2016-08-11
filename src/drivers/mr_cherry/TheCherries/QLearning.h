@@ -19,11 +19,16 @@
 		 vector<double> Value(const vector<double>& state, const vector<vector<double>>& actions);
 		 double Update(const StateTransition & transition);
 		 PerformanceStats& GetStats();
-		 void SetStats(PerformanceStats& PS);
+		 void SetStats(PerformanceStats& PS);		
 
-
-		//Members//
 	private:
+
+//		//Serialization
+///*		friend class boost::serialization::access;
+//		template<class Archive>
+//	*/	void serialize(Archive & ar, const unsigned int version);
+//
+		//Members/
 		double alpha;
 		double gamma;
 		double defaultQ;
@@ -38,3 +43,9 @@
 	};
 
 #endif
+
+	//template<class Archive>
+	//inline void QLearning::serialize(Archive & ar, const unsigned int version)
+	//{
+	//	ar & table;
+	//}

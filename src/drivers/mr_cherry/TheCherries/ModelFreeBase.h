@@ -6,11 +6,17 @@
 #include "ActionValue.h"
 
 
-extern "C"
-{
+
 	//Used for enforcing specific behaviours from model free classes
 	class  ModelFreeBase abstract : public ActionValue
 	{
+	//private:
+	//	//Serialization
+	//	friend class boost::serialization::access;
+	//	template<class Archive>
+	//	void serialize(Archive & ar, const unsigned int version) { ar & boost::serialization::base_object<ActionValue>(*this); };
+
+	//
 	public:
 
 		ModelFreeBase()
@@ -19,5 +25,6 @@ extern "C"
 
 		virtual ~ModelFreeBase() = 0 {};
 	};
-}
+
 #endif
+	//BOOST_SERIALIZATION_ASSUME_ABSTRACT(ModelFreeBase);

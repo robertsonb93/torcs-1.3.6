@@ -4,11 +4,13 @@
 
 
 #include "stdafx.h"
+
+
 #include "ModelBasedBase.h"
 
 
 
-class ModelBasedLearning : public ModelBasedBase
+class ModelBasedLearning : virtual public ModelBasedBase
 {
 private:
 	//Keeping the typedefs private makes it so that other classes can nicely define there own and there
@@ -21,9 +23,10 @@ private:
 
 public:
 	
+	ModelBasedLearning() {};
 	ModelBasedLearning(const vector<vector<double>>& AvailActions, const vector<double>& StartState );
 	ModelBasedLearning(const vector<vector<double>>& AvailActions, const vector<double>& StartState, double DefQ, double gam, int maxUps);
-	~ModelBasedLearning();
+	virtual ~ModelBasedLearning();
 
 	map<stateType,double> PredictNextStates(stateType state, actionType action);
 	stateType PredictNextState(stateType state, actionType action);
@@ -48,6 +51,12 @@ private:
 	map<vector<double>, double>::iterator findMaxPriority();
 	double calcUpdate_value(const stateType& iterMax);
 
+
+	//Serialization
+	friend class boost::serialization::access;
+	template<class Archive>
+	inline void serialize(Archive & ar, const unsigned int version);
+
 	/******MEMBERS******/
 	
 	
@@ -65,5 +74,24 @@ private:
 	stateType startState;
 	map<actionType, double> defaultMap;//Used for creating a quick table of default values for the Qtable
 };
+
+
+template<class Archive>
+inline void ModelBasedLearning::serialize(Archive & ar, const unsigned int version)
+{
+	cerr << "ENTERED MODEL BASED LEARNING SERIALIZE" << endl;
+	ar & boost::serialization::base_object<ModelBasedBase>(*this);
+	ar & TR;
+	ar & QTable;
+	ar & predecessors;
+	ar & availableActions;
+	cerr << " ModelBasedLearning Serialize Complete" << endl << endl;
+}
+
+
+BOOST_CLASS_EXPORT_KEY(ModelBasedLearning);
+
+
+
 
 #endif

@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "AgentSingle.h"
 
-
-
 AgentSingle::AgentSingle()
 {
 
@@ -20,7 +18,6 @@ AgentSingle::~AgentSingle()
 //Function will ask for the Q-Values from the current state, and possibleActions.
 //Afterwards will give the values to the Policy to get a Single action.
 //After receiving the Single action, the agent will give its state and action to the interpretor to perform the action in the world.
-#include <iostream>
 vector<double> AgentSingle::SelectAction()
 {
 	
@@ -71,6 +68,61 @@ void AgentSingle::LogEvent(StateTransition transition)
 {
 	state = transition.getNewState();
 	actionValue->Update(transition);
+}
+
+//Given a specific filename for where to archive the current learners Qtable
+//will call serialization function for a learner and save a copy of its QTable
+void AgentSingle::SaveLearnerArchive(string filename)
+{
+	std::cout << "Entered AgentSingle::SaveLearnerArchive" << std::endl;
+	std::ofstream ofs(filename, ios::out | ios::binary);
+	if(ofs.is_open())
+	{
+		boost::archive::binary_oarchive oa{ ofs };
+		{
+			try
+			{
+				oa << actionValue;
+			}
+			catch (std::exception &e)
+			{
+				std::cout << "Exception thrown from saving: "<<e.what() << std::endl;
+			}
+		}
+		std::cout << "Text Archive Finished on ofs" << std::endl;
+		ofs.close();
+	}
+	else
+		std::cout << "FAILED _____ AgentSingle::SaveLearnerArchive - Opened OFS: " << filename << std::endl;
+		
+}
+
+//Given a specific filename for where the desired archvie is located
+//Will call the serialization for a learner and change its QTAble to that of the archive
+void  AgentSingle::LoadLearnerArchive(string filename)
+{
+
+	std::cout << "Entered AgentSingle::LoadLearnerArchive" << std::endl;
+	std::ifstream ifs(filename, ios::in | ios::binary);
+	if (ifs.is_open())
+	{
+		boost::archive::binary_iarchive ia{ ifs };
+		{
+			try
+			{
+				ia >> actionValue;
+			}
+			catch (std::exception &e)
+			{
+				std::cout << "Exception thrown from saving: " << e.what() << std::endl;
+			}
+		}
+		std::cout << "Text Archive Finished on ofs" << std::endl;
+		ifs.close();
+	}
+	else
+		std::cout << "FAILED _____ AgentSingle::SaveLearnerArchive - Opened OFS: " << filename << std::endl;
+
 }
 
 void AgentSingle::setActionValue(ActionValue* newAv)

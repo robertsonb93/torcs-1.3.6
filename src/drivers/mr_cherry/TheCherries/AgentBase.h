@@ -9,6 +9,8 @@
 #include "ActionValue.h"
 #include "PolicyBase.h"
 #include "InterpretorBase.h"
+
+
 class WorldBase;
 	//Base class for agents for polymorphisms
 	class  AgentBase abstract
@@ -23,6 +25,8 @@ class WorldBase;
 		 virtual std::vector<double> SelectAction(vector<double>& params) = 0;//For use with policies that have parameters
 		 virtual void LogEvent(StateTransition transition) = 0;
 		 virtual PerformanceStats GetStats() = 0;
+		 virtual void SaveLearnerArchive(string filename) = 0;
+		 virtual void LoadLearnerArchive(string filename) = 0;
 
 		 //Use when creating a new Agent, instantiates a world and actionValue for the agent to work in. 
 		 virtual void setPossibleActions(vector<vector<double>>& AA) = 0;

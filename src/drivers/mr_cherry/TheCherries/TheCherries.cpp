@@ -1,10 +1,16 @@
+//#define _HAS_ITERATOR_DEBUGGING 1
+
 #include "stdafx.h"
+
+
 #include "AgentSingle.h"
 #include "ModelBasedEgoAlo.h"
-#include "QLearning.h"
+
 #include "EpsilonGreedy.h"
 #include "OptimalPolicy.h"
 #include <iostream>
+
+//BOOST_CLASS_EXPORT_KEY(::ModelBasedBase);
 
 	AgentBase* Agent = nullptr;
 	vector<double> StartStateVect;
@@ -42,13 +48,17 @@ extern "C" int _cdecl cherryEntry(const double* AvailActionsInput, const int Act
 	//	cout << endl;
 	//}
 
+
 	StartStateVect.assign(StartState, StartState + SSSize);
 
 	Agent = new AgentSingle();
-	//Agent->setActionValue(new ModelBasedLearning(AvailableActions, StartStateVect,20,0.01,10000));
-	Agent->setActionValue(new QLearning(AvailableActions));
-	Agent->setPolicy(new OptimalPolicy());
+	//Agent->setActionValue(new ModelBasedEgoAlo(AvailableActions, StartStateVect, 6));
+	//Agent->setActionValue(new ModelBasedEgoAlo(AvailableActions, StartStateVect, 6,1,0.99999,120));
+	Agent->setActionValue(new ModelBasedLearning(AvailableActions, StartStateVect));
+	Agent->setPolicy(new EpsilonGreedy(0.98));
 	Agent->setPossibleActions(AvailableActions);
+
+	
 	ActionSz = ActionSize;
 	StateSz = SSSize;
 	Agent->SetState(StartStateVect);
@@ -84,4 +94,18 @@ extern "C" void PerformUpdate(const double* StatePrime, const double Reward)
 	
 
 	Agent->LogEvent(StateTransition(Agent->GetState(), SPrime, LastAction, Reward));
+}
+
+extern "C" void LoadLearner()
+{
+	cout << "entered Load Learner" << endl;
+	string filename = "C:\\Users\\User\\Documents\\Coding\\Torcs\\torcs-1.3.6\\runtime\\drivers\\mr_cherry\\TheCherries\\model.txt";
+	Agent->LoadLearnerArchive(filename);
+}
+
+extern "C" void SaveLearner()
+{
+	cout << "entered Save Learner" << endl;
+	string filename = "C:\\Users\\User\\Documents\\Coding\\Torcs\\torcs-1.3.6\\runtime\\drivers\\mr_cherry\\TheCherries\\model.txt";
+	Agent->SaveLearnerArchive(filename);
 }

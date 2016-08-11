@@ -61,7 +61,11 @@ typedef int(__cdecl *MYPROC)(LPWSTR);
 typedef double* (__cdecl *PerformAction)();
 typedef void(__cdecl *PerformUpdate)(const double* StatePrime, const double Reward);
 typedef void(__cdecl *cherryEntry)(const double* AvailActions, const int ActSize, const int AAsz, const double* StartState, const int SSsz);
+typedef void(__cdecl *SaveLearner)();
+typedef void(__cdecl *LoadLearner)();
 
+static SaveLearner Save;
+static LoadLearner Load;
 static PerformAction CherryAction;
 static cherryEntry EnterTheCherry;
 static PerformUpdate CherryUpdate;
@@ -70,11 +74,11 @@ static HINSTANCE TheCherriesDLLHandle;
 //Members used to pass info to the Cherry,
 static double* AvailActions;
 static double AAsz, ActSize, stateSize;
-double bestLapTime = DBL_MAX;
+double bestLapTime;
 int lastLap;
 int oldSeg;
 double* oldstate, *state;
-double*action = new double[1];
+double*action = new double[2];
 bool offTrack = false, midTrack = true;
 int numUpdates = 0;
 bool firstStep = true;
@@ -83,7 +87,6 @@ int updatesWhileStopped = 0;
 int unStuckProcedure = 0;
 double lastStuckDistance = 0;
 int tryProcedure = 0;
-double checkpointStartTime = 0;
 
 bool commitLapTimeWasTrue = true;
 
@@ -92,10 +95,15 @@ Driver::Driver(int index)
 {
 	INDEX = index;
 	DoDatDLL();
+	
 }
 
 Driver::~Driver()
 {
+
+	std::cout << "Entered ~Driver" << std::endl;
+	Save();
+
 	delete opponents;
 	delete pit;
 	delete[] radius;
@@ -110,6 +118,7 @@ Driver::~Driver()
 	CherryUpdate = NULL;
 	CherryAction = NULL;
 	EnterTheCherry = NULL;
+	
 
 }
 
@@ -120,6 +129,7 @@ Driver::~Driver()
 //Will also 
 void Driver::initTrack(tTrack * t, void * carHandle, void ** carParmHandle, tSituation * situation)
 {
+
 	//track takes the value of pointer
 	track = t;
 
@@ -211,39 +221,41 @@ void Driver::newRace(tCarElt * car, tSituation * situation)
 
 	lastLap = car->race.laps;
 	oldSeg = car->pub.trkPos.seg->id;
+
+	Load();
 }
 
 //Use this for determining what your Available actions are, this function returns a double[], where an action is size n, subset of the array
 double* Driver::setAvailActions()
 {
 	//Actions will be in order of Throttle, Steer, negative values imply the opposite direction.
-	AAsz = 4;//FullThrot,HalfThrot,NoThrot,FullBrake, Paired With Left,Right,NoTurn
-	ActSize = 1;//Throttle steer, 
-	double gofast[4] = { 1,0.5,0,-1 };//, half, no throttle, full brake
+	AAsz = 18;//FullThrot,HalfThrot,NoThrot,FullBrake, Paired With Left,Right,NoTurn
+	ActSize = 2;//Throttle steer, 
+	double gofast[3] = { 0.35,0,-1 };//, half, no throttle, full brake
 	double turn[3] = { 1, 0 , -1 };//straight Left right 
 	AvailActions = new double[AAsz];
 	int pos = 0;
 
-	//for (int i = 0; i < 3; i++)
-	//{
-		for (int j = 0; j < 4; j++)
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
 		{
-			AvailActions[pos++] = gofast[j];
-	//		//AvailActions[pos++] = turn[j];
+			AvailActions[pos++] = gofast[i];
+			AvailActions[pos++] = turn[j];
 		}
-	//}
-	action[0] = gofast[0];
-	//action[1] = AvailActions[1];
+	}
+	action[0] = AvailActions[0];
+	action[1] = AvailActions[1];
 	return AvailActions;
 }
 
 //Will be used for setting the Start State and also for updating what the current state is.
 double* Driver::setState()
 {
-	
+	stateSize = 11;
 	float tm = fabs(car->_trkPos.toMiddle);//absolute distance from middle, 
 	float w = car->pub.trkPos.seg->width / WIDTHDIV;// how far from middle we will allow
-	stateSize = 5;
+	
 	double* ret = new double[stateSize];
 	int i = 0;
 
@@ -254,23 +266,20 @@ double* Driver::setState()
 	//EgoStates
 	double EgoDiscretize = 10, AloDiscretize = 10;
 	
-	//ret[i++] = (car->pub.trkPos.seg->next->type);
-	//ret[i++] = 0;
-	//ret[i++] = 0;
-	//ret[i++] = ((int)(car->_speed_X)/3)*3; std::cout << "EgoSpeed = " << ret[i - 1] << std::endl;
-	//ret[i++] = ((int)((tm / w) * EgoDiscretize)) / EgoDiscretize; 
-	//if (ret[i - 1] > 1.1)ret[i - 1] = 1.1; else if (ret[i - 1] < -1.1)ret[i - 1] = -1.1; std::cout << "track percent = " << ret[i - 1] << std::endl;
-	//ret[i++] = (int)(angle * 180 / 22.5); std::cout << "Ego Angle = " << ret[i - 1] << std::endl;// EgoDiscretize)) / EgoDiscretize;
+	ret[i++] = (car->pub.trkPos.seg->next->type);
+	ret[i++] = 0;
+	ret[i++] = (car->_speed_X / 10);
+	ret[i++] = (car->_speed_X > 0.5); std::cout << "EgoSpeed = " << ret[i - 1] << std::endl;
+	ret[i++] = (double)((int)((tm / w) * EgoDiscretize)) / EgoDiscretize; std::cout << "track percent = " << ret[i - 1] << std::endl;
+	ret[i++] = (int)(angle * 180 / 22.5); std::cout << "Ego Angle = " << ret[i - 1] << std::endl;// EgoDiscretize)) / EgoDiscretize;
 
 	//Alo States
-	ret[i++] = (car->pub.trkPos.seg->id); //std::cout << ret[i - 1] << std::endl;
-	ret[i++] = (int)(getDistToSegeEnd()*(AloDiscretize*10) / (10*AloDiscretize));//	std::cout << "percent of segend: " << ret[i - 1] << std::endl;
-	ret[i++] = (int)(car->_speed_X);// std::cout << "speed_X: " << ret[i - 1] << std::endl;
-	ret[i++] = (int)(angle * 100);// std::cout << "angle: " << ret[i - 1] << std::endl;
-	ret[i++] = (int) ((((int)((tm / w) *AloDiscretize))/ AloDiscretize))*10;// std::cout << "tm / w: " << ret[i - 1] << std::endl;
-	//if (ret[i - 1] > 1.1)ret[i - 1] = 1.1; else if (ret[i - 1] < -1.1)ret[i - 1] = -1.1;
+	ret[i++] = (car->pub.trkPos.seg->id);
+	ret[i++] = (int)(getDistToSegeEnd()*AloDiscretize / AloDiscretize);	//std::cout << "percent of segend: " << ret[i - 1] << std::endl;
+	ret[i++] = (double)((int)(car->_speed_X));// std::cout << "speed_X: " << ret[i - 1] << std::endl;
+	ret[i++] = (int)(angle * 180 / 22.5); //std::cout << "angle: " << ret[i - 1] << std::endl;
+	ret[i++] = (double)((int)((tm / w) *AloDiscretize))/ AloDiscretize;// std::cout << "tm / w: " << ret[i - 1] << std::endl;
 
-	
 
 
 	return ret;//Remember to change the Cherries and and stateSize(top of this function)
@@ -308,21 +317,19 @@ void Driver::drive(tSituation * situation)
 				oldstate = state;
 
 				action = CherryAction();
-				//std::cout << action[0] << std::endl;
 				firstStep = false;
 			}
 		}
 		{
 			//std::cout << action[0] << ';' << action[1] << std::endl << std::endl;
 			//Steering will be the indexed 1 value, the throttle will be the indexed 0 value
-			car->_steerCmd = filterSColl(getSteer());
+			car->_steerCmd = filterSColl(action[1]);
 			//car->_steerCmd = filterSColl(action[1]);
 			car->_gearCmd = getGear();
 			//car->_brakeCmd = filterABS(filterBrakeSpeed(filterBColl(filterBPit(getBrake()))));
 
 			if (action[0] < 0)
 			{
-				
 				car->_brakeCmd = filterABS(filterBrakeSpeed(filterBColl(filterBPit(-1 * (float)action[0]))));
 				car->_accelCmd = 0.0f;
 			}
@@ -334,6 +341,7 @@ void Driver::drive(tSituation * situation)
 			car->_clutchCmd = getClutch();
 		}
 	}
+
 }
 
 // Set pitstop commands.
@@ -347,9 +355,11 @@ int Driver::pitCommand(tSituation *s)
 }
 
 // End of the current race.
+//This is not entered when abort race is called 
 void Driver::endRace(tSituation *s)
 {
-	// Nothing for now.
+	std::cout << "Entered End Race" << std::endl;
+//	Save();
 }
 
 
@@ -395,6 +405,23 @@ void Driver::DoDatDLL()
 		else
 			std::cout << "We know How to craft a Cherry! (CherryUpdate)" << std::endl;
 
+		Save = (SaveLearner)GetProcAddress(TheCherriesDLLHandle, "SaveLearner");
+		if (!Save)
+		{
+			std::cout << "FailedLoading Save (SaveLearner) function. (Line 399 of mr_cherry::driver)" << std::endl; abort();
+		}
+		else
+			std::cout << "We know How to Save a Cherry! (SaveLearner)" << std::endl;
+
+		Load = (LoadLearner)GetProcAddress(TheCherriesDLLHandle, "LoadLearner");
+		if (!Load)
+		{
+			std::cout << "FailedLoading Load (LoadLearner) function. (Line 407 of mr_cherry::driver)" << std::endl; abort();
+		}
+		else
+			std::cout << "We know How to Load a Cherry! (LoadLearner)" << std::endl;
+
+
 		return;
 	}
 	else
@@ -408,9 +435,12 @@ void Driver::DoDatDLL()
 //Determines if we should start using unstuck protocols
 bool Driver::isStuck()
 {
+	float tm = fabs(car->_trkPos.toMiddle);//absolute distance from middle, 
+	float w = car->pub.trkPos.seg->width / WIDTHDIV;// how far from middle we will allow
+
 	if (fabs(angle) > MAX_UNSTUCK_ANGLE &&
 		car->_speed_x < MAX_UNSTUCK_SPEED &&
-		fabs(car->_trkPos.toMiddle) > MIN_UNSTUCK_DIST) {
+		fabs((double)((int)((tm / w) * 10)) / 10) > 1.1) {
 		if (stuck > MAX_UNSTUCK_COUNT && car->_trkPos.toMiddle*angle < 0.0) {
 			return true;
 		}
@@ -438,37 +468,28 @@ void Driver::getUnstuck()
 
 void Driver::update(tSituation * s)
 {
-	//ret[i++] = (int)(car->_trkPos.toMiddle / (car->pub.trkPos.seg->width / WIDTHDIV) * 100);
+
+	float tm = fabs(car->_trkPos.toMiddle);//absolute distance from middle, 
+	float w = car->pub.trkPos.seg->width / WIDTHDIV;// how far from middle we will allow
 
 	//For the Cherries
-	int reward = -1 + (int)car->_speed_X - abs((int)(car->_trkPos.toMiddle / (car->pub.trkPos.seg->width / WIDTHDIV) * 100));
+	double reward = -1 + (int)car->_speed_X - abs((double)((int)((tm / w) *10)) / 10) - abs((int)(angle * 180 / 22.5));
 	//std::cout << "Updates" << std::endl;
 	
 	int curSeg = car->pub.trkPos.seg->id;
 
 	if (car->race.laps > lastLap)
 	{
-		if (commitLapTimeWasTrue)
-			reward += 10;
 		commitLapTimeWasTrue = true;
-
 		lastLap = car->race.laps;
 		oldSeg = -1;
 		if (car->race.bestLapTime != 0 && car->race.bestLapTime < bestLapTime)
 		{
 			bestLapTime = car->race.bestLapTime;
-			reward +=10;
+			reward += 100;
 		}
-	}
-
-	if ( (curSeg % 50 == 0 && curSeg != oldSeg) || oldSeg == -1)
-	{
-		if (oldSeg != -1)
-		{
-			reward += 1000 - ((car->race.curLapTime - checkpointStartTime)) * 100;
-			//std::cout << "Checkpoint reward = :" << 1000 - ((car->race.curLapTime - checkpointStartTime)) * 100 << std::endl;
-		}
-		checkpointStartTime = car->race.curLapTime;
+		else if ( car->race.bestLapTime < bestLapTime)
+			reward += 1000;	
 	}
 
 	if (curSeg > oldSeg)
@@ -479,13 +500,13 @@ void Driver::update(tSituation * s)
 	}
 	else if (curSeg < oldSeg)
 	{
-		reward -= 10;
+		reward -= 1000;
 		oldSeg = curSeg;
 	} 
 	if(!car->race.commitBestLapTime && commitLapTimeWasTrue)//If we are not committing the last laptime, and we havent punished it yet.
 	{
 		commitLapTimeWasTrue = false;
-		reward -= 10;
+		reward -= 1000;
 
 	}
 	if (car->_speed_X < 1 && action[0] < 0.1)
@@ -496,14 +517,12 @@ void Driver::update(tSituation * s)
 
 	
 	//Detect off track
-	float tm = fabs(car->_trkPos.toMiddle);//absolute distance from middle, 
-	float w = car->pub.trkPos.seg->width / WIDTHDIV;// how far from middle we will allow
-	if (tm > w )
+	if (tm > w && !offTrack )
 	{
-		//offTrack = true;
-		reward -= 10;
+		offTrack = true;
+		reward -= 1000;
 	}
-	//else if(tm <= w) offTrack = false;
+	else if(tm <= w) offTrack = false;
 	
 	 
 

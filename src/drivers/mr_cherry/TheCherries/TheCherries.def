@@ -6,3 +6,6 @@ EXPORTS
 	cherryEntry
 	PerformAction
 	PerformUpdate
+	LoadLearner
+	SaveLearner
+	
