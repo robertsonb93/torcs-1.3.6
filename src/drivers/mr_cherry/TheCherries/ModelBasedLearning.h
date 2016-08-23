@@ -76,7 +76,7 @@ template<class Archive>
 inline void ModelBasedLearning::serialize(Archive & ar, const unsigned int version)
 {
 	ar & boost::serialization::base_object<ModelBasedBase>(*this);
-	//ar & TR;
+	ar & TR;
 	ar & QTable;
 	std::cout << QTable.size() << std::endl;
 	ar & defaultMap;
