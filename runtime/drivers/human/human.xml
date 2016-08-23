@@ -6,13 +6,14 @@
   <section name="Robots">
     <section name="index">
       <section name="1">
-        <attstr name="car name" val="car7-trb1"/>
-        <attnum name="race number" val="20"/>
+        <attstr name="car name" val="car3-trb1"/>
+        <attnum name="race number" val="0"/>
         <attnum name="red" val="1"/>
         <attnum name="green" val="1"/>
         <attnum name="blue" val="0.5"/>
         <attstr name="type" val="human"/>
         <attstr name="skill level" val="rookie"/>
+        <attstr name="name" val="P1"/>
       </section>
 
     </section>

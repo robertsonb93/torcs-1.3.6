@@ -68,12 +68,14 @@ private:
 	static void DoDatDLL();
 
 	//Utility Functions.
-	double* setAvailActions();
-	double *setState();
+	double* setActions();
+	double* setState();
+	void updateState(tSituation *s);
+
 
 	bool isStuck();
 	void getUnstuck();
-	void update(tSituation *s);
+
 	float getAllowedSpeed(tTrackSeg *segment);
 		float getAccel();
 	float getDistToSegeEnd();

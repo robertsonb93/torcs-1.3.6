@@ -46,8 +46,14 @@ public:
 	void ResetStats();
 
 private:
-
+	
 	void updatePredictionModels(const stateType& oldEgo,const actionType& act,const stateType& newAlo,const stateType& oldAlo,const double rew);
+
+
+	//Serialization
+	friend class boost::serialization::access;
+	template<class Archive>
+	inline void serialize(Archive & ar, const unsigned int version);
 
 	//****MEMBERS****//
 	ModelBasedLearning aloLearner,rewardPredictionModel;
@@ -69,22 +75,17 @@ private:
 };
 #endif
 
-//template<class Archive>
-//inline void ModelBasedEgoAlo::serialize(Archive & ar, const unsigned int version)//Does not provide the start state, parameters (except egoSize)
-////{
-//	cerr <<endl<< "Entered ModelBasedEgoAlo Serialize" << endl;
-//
-//	//ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(ActionValue);
-//	//ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(ModelBasedBase);
-//	//ar & boost::serialization::base_object<ModelBasedBase>;
-//	ar & boost::serialization::make_nvp("Alo",aloLearner);
-//	ar & availableActions;
-//	ar & rewardPredictionModel;
-//	ar & aloFeaturePredictionModels;
-//	ar & visitedStates;
-//	ar & visitedEgoStates;
-//	ar & egoSize;
-//	cerr << endl << "finished ModelBasedEgoAlo Serialize" << endl;
-//}
+template<class Archive>
+inline void ModelBasedEgoAlo::serialize(Archive & ar, const unsigned int version)//Does not provide the start state, parameters (except egoSize)
+{
+	ar & boost::serialization::base_object<ModelBasedBase>(*this);
+	ar & availableActions;
+	ar & rewardPredictionModel;
+	ar & aloFeaturePredictionModels;
+	ar & visitedEgoStates;
+	ar & egoSize;
 
-//BOOST_CLASS_EXPORT_KEY(ModelBasedEgoAlo);
+	//cerr << endl << "finished ModelBasedEgoAlo Serialize" << endl;
+}
+
+BOOST_CLASS_EXPORT_KEY(ModelBasedEgoAlo);

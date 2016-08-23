@@ -10,8 +10,9 @@
     <attnum name="skid value" val="100"/>
     <attnum name="skid length" val="300"/>
     <attnum name="skid interval" val="0.05"/>
-    <attnum name="fov factor" val="2"/>
-    <attstr name="wheel rendering" val="detailed"/>
+    <attnum name="fov factor" unit="%" val="200"/>
+    <attstr name="wheel rendering" val="simple"/>
+    <attnum name="LOD Factor" val="1"/>
   </section>
 
   <section name="Playable Cameras Distance of Views">
@@ -66,6 +67,21 @@
 
     <section name="0">
       <attnum name="fovy-9-0" val="9"/>
+      <attnum name="driver board" val="1"/>
+      <attnum name="driver counter" val="0"/>
+      <attnum name="leader board" val="2"/>
+      <attnum name="G graph" val="1"/>
+      <attnum name="debug info" val="1"/>
+      <attnum name="enable mirror" val="0"/>
+      <attstr name="current driver" val="mr_cherry 5"/>
+      <attnum name="camera" val="0"/>
+      <attnum name="camera head list" val="0"/>
+      <attnum name="fovy-0-0" val="40"/>
+    </section>
+
+    <section name="P1">
+      <attnum name="camera" val="0"/>
+      <attnum name="camera head list" val="0"/>
     </section>
 
   </section>

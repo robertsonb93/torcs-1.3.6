@@ -58,9 +58,11 @@ double angle;
 
 typedef int(__cdecl *MYPROC)(LPWSTR);
 //We have to prototype the Type of functions that will be called from TheCherries DLL.
-typedef double* (__cdecl *PerformAction)();
-typedef void(__cdecl *PerformUpdate)(const double* StatePrime, const double Reward);
+typedef double* (__cdecl *PerformAction)(const int AgentIDNum);
+typedef void(__cdecl *PerformUpdate)(const int AgentIDNum, const double* StatePrime, const double Reward);
 typedef void(__cdecl *cherryEntry)(const double* AvailActions, const int ActSize, const int AAsz, const double* StartState, const int SSsz);
+typedef void(__cdecl *nameCherry)(const int desiredCherry, const char* name, const int nameSize);
+typedef void( _cdecl *cherryExit) ();
 typedef void(__cdecl *SaveLearner)();
 typedef void(__cdecl *LoadLearner)();
 
@@ -68,27 +70,30 @@ static SaveLearner Save;
 static LoadLearner Load;
 static PerformAction CherryAction;
 static cherryEntry EnterTheCherry;
+static nameCherry nameAnotherCherry;
+static cherryExit LeaveTheCherry;
 static PerformUpdate CherryUpdate;
 static HINSTANCE TheCherriesDLLHandle;
+enum AgentTypes{Throttle=0, Brake=1, Gear=3, Steer=2, Clutch=4};
 
+#include <vector>
 //Members used to pass info to the Cherry,
 static double* AvailActions;
 static double AAsz, ActSize, stateSize;
+double* oldstate, *state;
+
 double bestLapTime = DBL_MAX;
 int lastLap;
-int oldSeg;
-double* oldstate, *state;
-double*action = new double[1];
+int oldSeg, numSegs;
+double* action;
 bool offTrack = false, midTrack = true;
 int numUpdates = 0;
 bool firstStep = true;
-int delayUpdate = 0;
-int updatesWhileStopped = 0;
 int unStuckProcedure = 0;
 double lastStuckDistance = 0;
 int tryProcedure = 0;
 double checkpointStartTime = 0;
-
+bool hasSaved = false;
 bool commitLapTimeWasTrue = true;
 
 
@@ -101,9 +106,10 @@ Driver::Driver(int index)
 
 Driver::~Driver()
 {
-
-	std::cout << "Entered ~Driver" << std::endl;
+	std::cout << "Terminating state was: " << "Seg:" << state[0] << " Speed:" << state[1] << " Angle: " << state[2] << " Offset:" << state[3] << "Y-Vel: "<<state[4]<< std::endl;
 	Save();
+
+	LeaveTheCherry();
 
 	delete opponents;
 	delete pit;
@@ -115,9 +121,14 @@ Driver::~Driver()
 		delete cardata;
 		cardata = nullptr;
 	}
+	
 	FreeLibrary(TheCherriesDLLHandle);
+	Save = NULL;
+	nameAnotherCherry = NULL;
+	Load = NULL;
 	CherryUpdate = NULL;
 	CherryAction = NULL;
+	LeaveTheCherry = NULL;
 	EnterTheCherry = NULL;
 	
 
@@ -214,39 +225,49 @@ void Driver::newRace(tCarElt * car, tSituation * situation)
 	// create the pit object.
 	pit = new Pit(situation, this);
 
-	//Initialize the Cherry learner	
-	double* AA = setAvailActions();
+	//Initialize the Cherry learner(s)
 	angle = trackangle - car->_yaw;
+	std::string name;
+
+
+
+
+	//Throttle Control Cherry
+	setActions();
 	oldstate = state = setState();
-	EnterTheCherry(AA, ActSize, AAsz, state, stateSize);
+
+	EnterTheCherry(AvailActions, ActSize, AAsz, state, stateSize);
+	
+	name = "SuperModel";
+	nameAnotherCherry(0, name.c_str(), name.size());
 
 	lastLap = car->race.laps;
 	oldSeg = car->pub.trkPos.seg->id;
-
 	Load();
 }
 
 //Use this for determining what your Available actions are, this function returns a double[], where an action is size n, subset of the array
-double* Driver::setAvailActions()
+double* Driver::setActions()
 {
-	//Actions will be in order of Throttle, Steer, negative values imply the opposite direction.
-	AAsz = 4;//FullThrot,HalfThrot,NoThrot,FullBrake, Paired With Left,Right,NoTurn
-	ActSize = 1;//Throttle steer, 
-	double gofast[4] = { 1,0.5,0,-1 };//, half, no throttle, full brake
-	double turn[3] = { 1, 0 , -1 };//straight Left right 
-	AvailActions = new double[AAsz];
-	int pos = 0;
+	action = new double[3];
 
-	//for (int i = 0; i < 3; i++)
-	//{
-	for (int j = 0; j < 4; j++)
-	{
-		AvailActions[pos++] = gofast[j];
-		//		//AvailActions[pos++] = turn[j];
-	}
-	//}
-	action[0] = gofast[0];
-	//action[1] = AvailActions[1];
+	//const int throttleSize = 2, brakeSize = 3, SteerSize = 5 ;
+	AAsz = 27; //with 9 controls, and each size 3, this makes the avail action size 27
+	ActSize = 3;
+
+	//List in the order of throttle, brake, steer
+	//up, down, left, right, UL,UR, DL, DR, nothing
+	double temp[] = { 1,0,0, 0,1,0, 0,0,1, 0,0,-1, 1,0,1, 1,0,-1, 0,-1,1, 0,-1,-1, 0,0,0 };
+	AvailActions = new double[AAsz];
+	
+	for (int i = 0; i < AAsz; i++)
+		AvailActions[i] = temp[i];
+	
+	
+	action[Throttle] = AvailActions[Throttle];
+	action[Brake] = AvailActions[Brake];
+	action[Steer] = AvailActions[Steer];
+
 	return AvailActions;
 }
 
@@ -254,37 +275,18 @@ double* Driver::setAvailActions()
 double* Driver::setState()
 {
 	stateSize = 5;
-	float tm = fabs(car->_trkPos.toMiddle);//absolute distance from middle, 
+	float tm =(car->_trkPos.toMiddle);//absolute distance from middle, 
 	float w = car->pub.trkPos.seg->width / WIDTHDIV;// how far from middle we will allow
-	
 	double* ret = new double[stateSize];
 	int i = 0;
-
-
-	//TODO: Look into setting up ego centric learners that learn different information based off whether we are in corner or not.
-
-	//std::cout << "Width Percent = " << (int)(car->_trkPos.toMiddle / (car->pub.trkPos.seg->width / WIDTHDIV) * 100) / 10 << std::endl;
-	//EgoStates
-	double EgoDiscretize = 10, AloDiscretize = 10;
-	double EgoDiscretize = 10, AloDiscretize = 10;
-
-	//ret[i++] = (car->pub.trkPos.seg->next->type);
-	//ret[i++] = 0;
-	//ret[i++] = 0;
-	//ret[i++] = ((int)(car->_speed_X)/3)*3; std::cout << "EgoSpeed = " << ret[i - 1] << std::endl;
-	//ret[i++] = ((int)((tm / w) * EgoDiscretize)) / EgoDiscretize; 
-	//if (ret[i - 1] > 1.1)ret[i - 1] = 1.1; else if (ret[i - 1] < -1.1)ret[i - 1] = -1.1; std::cout << "track percent = " << ret[i - 1] << std::endl;
-	//ret[i++] = (int)(angle * 180 / 22.5); std::cout << "Ego Angle = " << ret[i - 1] << std::endl;// EgoDiscretize)) / EgoDiscretize;
-
-	//Alo States
+	
+//	Alo States for throttle Controller
 	ret[i++] = (car->pub.trkPos.seg->id); //std::cout << ret[i - 1] << std::endl;
-	ret[i++] = (int)(getDistToSegeEnd()*(AloDiscretize * 10) / (10 * AloDiscretize));//	std::cout << "percent of segend: " << ret[i - 1] << std::endl;
-	ret[i++] = (int)(car->_speed_X);// std::cout << "speed_X: " << ret[i - 1] << std::endl;
-	ret[i++] = (int)(angle * 100);// std::cout << "angle: " << ret[i - 1] << std::endl;
-	ret[i++] = (int)((((int)((tm / w) *AloDiscretize)) / AloDiscretize)) * 10;// std::cout << "tm / w: " << ret[i - 1] << std::endl;
-																			  //if (ret[i - 1] > 1.1)ret[i - 1] = 1.1; else if (ret[i - 1] < -1.1)ret[i - 1] = -1.1;
-
-
+	ret[i - 1] += (double)(((int)(1 - (getDistToSegeEnd() / car->pub.trkPos.seg->length) * 10) / 5) * 5) / 10;
+	ret[i++] = (int)(car->_speed_X/2)*2;// std::cout << "speed_X: " << ret[i - 1] << std::endl;
+	ret[i++] = ((int)(angle * 100)/5)*5; //std::cout << "angle: " << ret[i - 1] << std::endl;
+	ret[i++] = (int)((int)((tm / w)*10)/ 5 )* 5; //std::cout << "tm / w: " << ret[i - 1] << std::endl;
+	ret[i++] = (int)(car->_speed_Y);// std::cout << "Velocity:y = " << ret[i - 1] << std::endl;
 
 	return ret;//Remember to change the Cherries and and stateSize(top of this function)
 };
@@ -295,56 +297,58 @@ double* Driver::setState()
 //Essential we check if the car is stuck, if not the we continue to drive with the results of getGear, getSteer etc...
 void Driver::drive(tSituation * situation)
 {
+
 	memset(&car->ctrl, 0, sizeof(tCarCtrl));// we are allocation sizeof(tCarCtrl) bytes of memory from car->ctrl
-	
+	car->ctrl.askRestart = false;
+
 
 	//For the driver
 	trackangle = RtTrackSideTgAngleL(&(car->_trkPos));
 	angle = trackangle - car->_yaw;
 	NORM_PI_PI(angle);
 
-	if (isStuck()) {
-		//delayUpdate = 150;
-		getUnstuck();
+	//std::cout << "Curr Lap time = " << car->race.curLapTime << std::endl;
+	if (isStuck()  || car->race.curLapTime > 180)
+	{
+		car->ctrl.askRestart = true;		
 	}
-
-	else {
+	else
+	{	
+		if (car->race.curLapTime > 0)
 		{
 			state = setState();
+
 			bool doUpdate = false;
-			for(int i =0;i<stateSize;i++)
-			if (state[i] != oldstate[i] || firstStep || sqrt(car->_speed_X * car->_speed_X) < 1)
-				doUpdate = true;
+
+			for (int i = 0; i < stateSize; i++)
+			{
+				if (i == 1) continue;
+				if (state[i] != oldstate[i] || firstStep || sqrt(car->_speed_X * car->_speed_X) < 1)
+					doUpdate = true;
+			}
 			if (doUpdate)
 			{
-				update(situation);
+				updateState(situation);
 				oldstate = state;
-
-				action = CherryAction();
-				firstStep = false;
+				action = CherryAction(0);
+				doUpdate = false;
 			}
-		}
-		{
-			//std::cout << action[0] << ';' << action[1] << std::endl << std::endl;
-			//Steering will be the indexed 1 value, the throttle will be the indexed 0 value
-			car->_steerCmd = filterSColl(getSteer());
-			//car->_steerCmd = filterSColl(action[1]);
-			car->_gearCmd = getGear();
-			//car->_brakeCmd = filterABS(filterBrakeSpeed(filterBColl(filterBPit(getBrake()))));
-
-			if (action[0] < 0)
-			{
-				car->_brakeCmd = filterABS(filterBrakeSpeed(filterBColl(filterBPit(-1 * (float)action[0]))));
-				car->_accelCmd = 0.0f;
-			}
-			else
-			{
-				car->_brakeCmd = 0.0f;
-				car->_accelCmd = filterTCL(action[0]);
-			}
+			firstStep = false;
+			car->_steerCmd = action[Steer];// filterSColl(getSteer());
+			car->_gearCmd = getGear();// car->_gear + action[0];/// getGear();
+			car->_brakeCmd = filterABS(action[Brake]);
+			car->_accelCmd = action[Throttle];
 			car->_clutchCmd = getClutch();
 		}
 	}
+
+	if (!(car->race.laps % 10) && car->race.laps > 1 && !hasSaved)
+	{
+		Save();
+		hasSaved = true;
+	}
+	if (car->race.laps % 10)
+		hasSaved = false;
 
 }
 
@@ -381,50 +385,50 @@ void Driver::DoDatDLL()
 	TheCherriesDLLHandle = LoadLibrary(txt);
 	if (TheCherriesDLLHandle != NULL)
 	{
-		std::cout << "Loaded DLL" << txt << "  " << std::endl;
+		//std::cout << "Loaded DLL" << txt << "  " << std::endl;
 
 		//Resolve the function addresses here
 		CherryAction = (PerformAction)GetProcAddress(TheCherriesDLLHandle, "PerformAction");
 		if (!CherryAction)//If it is null
 		{
-			std::cout << "FailedLoading Perform Action (CherryAction) function. (Line 235 of mr_cherry::driver)" << std::endl; abort();
+			std::cout << "FailedLoading Perform Action (CherryAction) function. (DoDatDLL() of mr_cherry::driver)" << std::endl; abort();
 		}
-		else
-			std::cout << "We know how to make a Cherry Act CherryAction" << std::endl;
 
 		EnterTheCherry = (cherryEntry)GetProcAddress((TheCherriesDLLHandle), "cherryEntry");
 		if (!EnterTheCherry)//If it is null
 		{
-			std::cout << "FailedLoading entryCherry (EnterTheCherry) function. (Line 243 of mr_cherry::driver)" << std::endl; abort();
+			std::cout << "FailedLoading entryCherry (EnterTheCherry) function. (DoDatDLL() of mr_cherry::driver)" << std::endl; abort();
 		}
-		else
-			std::cout << "We know How to enter the Cherry! (EnterTheCherry)" << std::endl;
 
+		LeaveTheCherry = (cherryExit)GetProcAddress((TheCherriesDLLHandle), "cherryExit");
+		if (!LeaveTheCherry)
+		{
+			std::cout << "Failed Loading cherryExit (LeaveTheCherry) function. (DoDatDLL() of mr_cherry::Driver" << std::endl; abort();
+		}
+
+		nameAnotherCherry = (nameCherry)GetProcAddress((TheCherriesDLLHandle), "nameCherry");
+		if (!nameAnotherCherry)
+		{
+			std::cout << "Failed Loading cherryName (nameAnotherCherry) function. (DoDatDLL() of mr_cherry::Driver" << std::endl; abort();
+		}
 
 		CherryUpdate = (PerformUpdate)GetProcAddress(TheCherriesDLLHandle, "PerformUpdate");
 		if (!CherryUpdate)
 		{
-			std::cout << "FailedLoading entryCherry (CherryUpdate) function. (Line 252 of mr_cherry::driver)" << std::endl; abort();
+			std::cout << "FailedLoading entryCherry (CherryUpdate) function. (DoDatDLL() of mr_cherry::driver)" << std::endl; abort();
 		}
-		else
-			std::cout << "We know How to craft a Cherry! (CherryUpdate)" << std::endl;
 
 		Save = (SaveLearner)GetProcAddress(TheCherriesDLLHandle, "SaveLearner");
 		if (!Save)
 		{
-			std::cout << "FailedLoading Save (SaveLearner) function. (Line 399 of mr_cherry::driver)" << std::endl; abort();
+			std::cout << "FailedLoading Save (SaveLearner) function. (DoDatDLL() of mr_cherry::driver)" << std::endl; abort();
 		}
-		else
-			std::cout << "We know How to Save a Cherry! (SaveLearner)" << std::endl;
 
 		Load = (LoadLearner)GetProcAddress(TheCherriesDLLHandle, "LoadLearner");
 		if (!Load)
 		{
-			std::cout << "FailedLoading Load (LoadLearner) function. (Line 407 of mr_cherry::driver)" << std::endl; abort();
+			std::cout << "FailedLoading Load (LoadLearner) function. (DoDatDLL() of mr_cherry::driver)" << std::endl; abort();
 		}
-		else
-			std::cout << "We know How to Load a Cherry! (LoadLearner)" << std::endl;
-
 
 		return;
 	}
@@ -470,20 +474,18 @@ void Driver::getUnstuck()
 }
 
 
-void Driver::update(tSituation * s)
+void Driver::updateState(tSituation * s)
 {
-	//ret[i++] = (int)(car->_trkPos.toMiddle / (car->pub.trkPos.seg->width / WIDTHDIV) * 100);
 
 	//For the Cherries
-	int reward = -1 + (int)car->_speed_X - abs((int)(car->_trkPos.toMiddle / (car->pub.trkPos.seg->width / WIDTHDIV) * 100));
-	//std::cout << "Updates" << std::endl;
+	int reward = -5 + car->_speed_X;
 
 	int curSeg = car->pub.trkPos.seg->id;
 
 	if (car->race.laps > lastLap)
 	{
 		if (commitLapTimeWasTrue)
-			reward += 10;
+			reward += 50 - ((car->race.lastLapTime - checkpointStartTime)) * 100;
 		commitLapTimeWasTrue = true;
 
 		lastLap = car->race.laps;
@@ -491,43 +493,41 @@ void Driver::update(tSituation * s)
 		if (car->race.bestLapTime != 0 && car->race.bestLapTime < bestLapTime)
 		{
 			bestLapTime = car->race.bestLapTime;
-			reward += 10;
+			//reward += 10;
 		}
 	}
-
-	if ((curSeg % 50 == 0 && curSeg != oldSeg) || oldSeg == -1)
+	if(curSeg > oldSeg || oldSeg == -1)
 	{
 		if (oldSeg != -1)
 		{
-			reward += 1000 - ((car->race.curLapTime - checkpointStartTime)) * 100;
-			//std::cout << "Checkpoint reward = :" << 1000 - ((car->race.curLapTime - checkpointStartTime)) * 100 << std::endl;
+			int temp = 50 - ((car->race.curLapTime - checkpointStartTime)) * 100;
+			if (temp > 0)
+				reward += temp;
+
+			//std::cout << "Checkpoint reward = :" << 50 - ((car->race.curLapTime - checkpointStartTime)) * 100 << std::endl;
 		}
+	
 		checkpointStartTime = car->race.curLapTime;
-	}
-
-	if (curSeg > oldSeg)
-	{
-		reward += 10;
 		oldSeg = curSeg;
-
 	}
+
+	//Punishments
 	else if (curSeg < oldSeg)
 	{
-		reward -= 10;
+		reward -= 100;
 		oldSeg = curSeg;
+		car->ctrl.askRestart = true;
 	}
 	if (!car->race.commitBestLapTime && commitLapTimeWasTrue)//If we are not committing the last laptime, and we havent punished it yet.
 	{
 		commitLapTimeWasTrue = false;
-		reward -= 10;
-
+		reward -= 100;
+		car->ctrl.askRestart = true;
 	}
-	if (car->_speed_X < 1 && action[0] < 0.1)
-	{
-		updatesWhileStopped += 2;
+	if (car->_speed_X < 1 && (action[Throttle] < 0.1 || action[Brake] > 0))
+	{	
 		reward -= 100;
 	}
-
 
 	//Detect off track
 	float tm = fabs(car->_trkPos.toMiddle);//absolute distance from middle, 
@@ -535,18 +535,17 @@ void Driver::update(tSituation * s)
 	if (tm > w)
 	{
 		//offTrack = true;
-		reward -= 10;
+		car->ctrl.askRestart = true;
+		reward = -100;
 	}
-	//else if(tm <= w) offTrack = false;
 
+	CherryUpdate(0,state, reward);
+	
 
-
-	//std::cout << " Current Segment: " << car->pub.trkPos.seg->id << std::endl;
-	//std::cout << state[0]<< state[1] <<state[2]<<state[3]<<state[4]<< std::endl;
-	CherryUpdate(state, reward);
 	return;
 
 }
+
 
 // Compute the allowed speed on a segment.
 float Driver::getAllowedSpeed(tTrackSeg *segment)
@@ -1280,6 +1279,7 @@ void Driver::computeRadius(float * radius)
 	currentseg = startseg;
 
 	do {
+		numSegs++;
 		if (currentseg->type == TR_STR) {
 			lastsegtype = TR_STR;
 			radius[currentseg->id] = FLT_MAX;

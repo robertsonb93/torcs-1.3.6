@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ModelBasedEgoAlo.h"
-//BOOST_CLASS_EXPORT_IMPLEMENT(ModelBasedEgoAlo)
+BOOST_CLASS_EXPORT_IMPLEMENT(ModelBasedEgoAlo)
 
 
 

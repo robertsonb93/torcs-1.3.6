@@ -31,14 +31,24 @@ std::vector<double> EpsilonGreedy::selectAction(std::vector<std::vector<double>>
 		auto end = values.end();
 		int i = 1, c = 0;
 		auto it = values.begin();
+	
 		for (auto newIt = values.begin() + 1; newIt != end; ++newIt, i++)
 		{
+			
 			if (*it < *newIt)
 			{
+			
 				c = i;
 				it = newIt;
 			}
+		
 		}
+
+		cout << "MAx Q: " << *it << " Other Vals: ";
+			for (int i = 0; i < values.size(); i++)
+				cout << values[i] << ',';
+		cout << endl;
+
 		return availableActions[c];
 	}
 	else //Randomly select a value

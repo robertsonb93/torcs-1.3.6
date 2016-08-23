@@ -12,6 +12,7 @@ AgentSingle::~AgentSingle()
 {
 	if(policy != nullptr)
 		delete policy;
+
 	policy = nullptr;
 }
 
@@ -74,22 +75,26 @@ void AgentSingle::LogEvent(StateTransition transition)
 //will call serialization function for a learner and save a copy of its QTable
 void AgentSingle::SaveLearnerArchive(string filename)
 {
-	std::cout << "Entered AgentSingle::SaveLearnerArchive" << std::endl;
 	std::ofstream ofs(filename, ios::out | ios::binary);
 	if(ofs.is_open())
 	{
-		boost::archive::binary_oarchive oa{ ofs };
+		try
 		{
+	
+			boost::archive::binary_oarchive oa{ ofs };
 			try
 			{
 				oa << actionValue;
 			}
 			catch (std::exception &e)
 			{
-				std::cout << "Exception thrown from saving: "<<e.what() << std::endl;
+				std::cout << "Exception thrown from saving: " << e.what() << std::endl;
 			}
 		}
-		std::cout << "Text Archive Finished on ofs" << std::endl;
+		catch(std::exception &e)
+		{
+			std::cout << "Exception thrown from Opening the Saving Archive: " << e.what() << std::endl;
+		}
 		ofs.close();
 	}
 	else
@@ -102,26 +107,32 @@ void AgentSingle::SaveLearnerArchive(string filename)
 void  AgentSingle::LoadLearnerArchive(string filename)
 {
 
-	std::cout << "Entered AgentSingle::LoadLearnerArchive" << std::endl;
+	
 	std::ifstream ifs(filename, ios::in | ios::binary);
 	if (ifs.is_open())
 	{
-		boost::archive::binary_iarchive ia{ ifs };
+		try
 		{
+			boost::archive::binary_iarchive ia{ ifs };
+
 			try
 			{
 				ia >> actionValue;
 			}
 			catch (std::exception &e)
 			{
-				std::cout << "Exception thrown from saving: " << e.what() << std::endl;
+				std::cout << "Exception thrown from Loading: " << e.what() << std::endl;
 			}
 		}
-		std::cout << "Text Archive Finished on ofs" << std::endl;
+		catch (std::exception &e)
+		{
+			std::cout << "Exception thrown from Opening the Loading Archive: " << e.what() << std::endl;
+		}
+		
 		ifs.close();
 	}
 	else
-		std::cout << "FAILED _____ AgentSingle::SaveLearnerArchive - Opened OFS: " << filename << std::endl;
+		std::cout << "FAILED _____ AgentSingle::SaveLearnerArchive - Opened IFS: " << filename << std::endl;
 
 }
 

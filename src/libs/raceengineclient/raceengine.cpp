@@ -623,6 +623,20 @@ ReOneStep(double deltaTimeIncrement)
 			ReRaceBigMsgSet("Go", 1.0);
 		}
 	}
+	bool restartRequested = false;
+
+	for (i = 0; i < s->_ncars; i++) {
+		if (s->cars[i]->ctrl.askRestart) {
+			restartRequested = true;
+			s->cars[i]->ctrl.askRestart = false;
+		}
+	}
+
+	if (restartRequested) {
+		ReRaceCleanup();
+		ReInfo->_reState = RE_STATE_PRE_RACE;
+		GfuiScreenActivate(ReInfo->_reGameScreen);
+	}
 
 	ReInfo->_reCurTime += deltaTimeIncrement * ReInfo->_reTimeMult; /* "Real" time */
 	s->currentTime += deltaTimeIncrement; /* Simulated time */

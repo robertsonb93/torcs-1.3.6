@@ -2,10 +2,7 @@
 #ifndef _MODELBASEDLEARNING_H
 #define _MODELBASEDLEARNING_H
 
-
 #include "stdafx.h"
-
-
 #include "ModelBasedBase.h"
 
 
@@ -42,7 +39,6 @@ public:
 	void SetStats(PerformanceStats& PS);
 	void ResetStats();
 
-	//friend class boost::serialization::access;
 
 private:
 
@@ -79,13 +75,16 @@ private:
 template<class Archive>
 inline void ModelBasedLearning::serialize(Archive & ar, const unsigned int version)
 {
-	cerr << "ENTERED MODEL BASED LEARNING SERIALIZE" << endl;
 	ar & boost::serialization::base_object<ModelBasedBase>(*this);
-	ar & TR;
+	//ar & TR;
 	ar & QTable;
+	std::cout << QTable.size() << std::endl;
+	ar & defaultMap;
+	
+	
+	//ar & priority;
 	ar & predecessors;
 	ar & availableActions;
-	cerr << " ModelBasedLearning Serialize Complete" << endl << endl;
 }
 
 

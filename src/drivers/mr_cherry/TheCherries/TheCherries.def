@@ -4,6 +4,8 @@ SECTIONS .data READ WRITE
 
 EXPORTS
 	cherryEntry
+	cherryExit
+	nameCherry
 	PerformAction
 	PerformUpdate
 	LoadLearner

@@ -102,7 +102,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <PrecompiledHeaderOutputFile>.\Debug/mr_cherry.pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>false</MinimalRebuild>
       <AssemblerListingLocation>.\$(Configuration)/</AssemblerListingLocation>
@@ -126,6 +126,7 @@
       <ImportLibrary>.\$(Configuration)/mr_cherry.lib</ImportLibrary>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
       <LargeAddressAware>true</LargeAddressAware>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
       <Command>copy $(TargetDir)*.dll $(SolutionDir)runtimed\drivers\mr_cherry</Command>
