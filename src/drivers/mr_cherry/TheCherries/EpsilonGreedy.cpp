@@ -44,10 +44,10 @@ std::vector<double> EpsilonGreedy::selectAction(std::vector<std::vector<double>>
 		
 		}
 
-		cout << "MAx Q: " << *it << " Other Vals: ";
-			for (int i = 0; i < values.size(); i++)
-				cout << values[i] << ',';
-		cout << endl;
+		//cout << "MAx Q: " << *it << " Other Vals: ";
+		//	for (int i = 0; i < values.size(); i++)
+		//		cout << values[i] << ',';
+		//cout << endl;
 
 		return availableActions[c];
 	}
