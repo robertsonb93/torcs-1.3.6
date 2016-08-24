@@ -46,7 +46,7 @@ extern "C" int _cdecl cherryEntry(const double* AvailActionsInput, const int Act
 	AgentVec.push_back(new AgentSingle());
 	//Agent->setActionValue(new ModelBasedEgoAlo(AvailableActions, StartStateVect, 6));
 	//Agent->setActionValue(new ModelBasedEgoAlo(AvailableActions, StartStateVect, 6,1,0.99999,120));
-	AgentVec[curAgent]->setActionValue(new ModelBasedLearning(AvailableActions[curAgent], StartStateVect[curAgent], 10000,0.,10000));
+	AgentVec[curAgent]->setActionValue(new ModelBasedLearning(AvailableActions[curAgent], StartStateVect[curAgent], 10000,0.99,10000));
 	AgentVec[curAgent]->setPolicy(new EpsilonGreedy(.98));
 	AgentVec[curAgent]->setPossibleActions(AvailableActions[curAgent]);
 
