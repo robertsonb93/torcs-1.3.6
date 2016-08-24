@@ -23,12 +23,12 @@
 
 	private:
 
-//		//Serialization
-///*		friend class boost::serialization::access;
-//		template<class Archive>
-//	*/	void serialize(Archive & ar, const unsigned int version);
-//
-		//Members/
+		//Serialization
+		friend class boost::serialization::access;
+		template<class Archive>
+		void serialize(Archive & ar, const unsigned int version);
+
+		//Members//
 		double alpha;
 		double gamma;
 		double defaultQ;
@@ -42,10 +42,16 @@
 
 	};
 
-#endif
+	template<class Archive>
+	inline void QLearning::serialize(Archive & ar, const unsigned int version)
+	{
+		ar & boost::serialization::base_object<ModelFreeBase>(*this);
+		ar & table;
+		std::cout << QTable.size() << std::endl;
+		ar & defaultMap;
+		ar & availableActions;
+	}
 
-	//template<class Archive>
-	//inline void QLearning::serialize(Archive & ar, const unsigned int version)
-	//{
-	//	ar & table;
-	//}
+	BOOST_CLASS_EXPORT_KEY(QLearning);
+
+#endif

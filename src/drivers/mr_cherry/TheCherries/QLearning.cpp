@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "QLearning.h"
+BOOST_CLASS_EXPORT_IMPLEMENT(QLearning)
+
 
 
 
