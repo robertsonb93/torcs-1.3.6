@@ -283,7 +283,7 @@ double* Driver::setState()
 //	Alo States for throttle Controller
 	ret[i++] = (car->pub.trkPos.seg->id); //std::cout << ret[i - 1] << std::endl;
 	ret[i - 1] += (double)(((int)(1 - (getDistToSegeEnd() / car->pub.trkPos.seg->length) * 10) / 5) * 5) / 10;
-	ret[i++] = (int)(car->_speed_X/5)*5;// std::cout << "speed_X: " << ret[i - 1] << std::endl;
+	ret[i++] = (int)(car->_speed_X/2)*2;// std::cout << "speed_X: " << ret[i - 1] << std::endl;
 	ret[i++] = ((int)(angle * 100)/5)*5; //std::cout << "angle: " << ret[i - 1] << std::endl;
 	ret[i++] = (int)((int)((tm / w)*10)/ 5 )* 5; //std::cout << "tm / w: " << ret[i - 1] << std::endl;
 	ret[i++] = (int)(car->_speed_Y);// std::cout << "Velocity:y = " << ret[i - 1] << std::endl;
