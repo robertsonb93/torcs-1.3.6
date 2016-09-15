@@ -11,7 +11,7 @@ BOOST_CLASS_EXPORT_IMPLEMENT(QLearning)
 	availableActions = AA;
 	alpha = 0.9;
 	gamma = 0.9;
-	defaultQ = 0.1;
+	defaultQ = 10;
 
 	for each(auto act in AA)
 	defaultMap[act] = defaultQ;
@@ -98,7 +98,20 @@ double QLearning::Update(const StateTransition& transition)
 	
 	*OS_Ptr = *OS_Ptr + alpha * (transition.getReward() + gamma * maxQ - *OS_Ptr);//The bellman equation 
 	return abs(*OS_Ptr - q_s_a);
-};
+}
+
+
+//Used to hard set the specific actions at the given state to the given Qval in the Qtable
+double QLearning::SetQValues(const std::vector<double>& state, const std::vector<vector<double>>& actions, const int Qval)
+{
+	for each  (vector<double> act in actions)
+	{
+		table[state][act] = Qval;
+	}
+
+	return 0;
+}
+;
 
 PerformanceStats& QLearning::GetStats() 
 {

@@ -57,6 +57,12 @@ void AgentSingle::SetState(vector<double>& inputState)
 	state = inputState;
 }
 
+//Used for setting the Q-Values in the Actionvalue, at the given state and actions a specific value
+void AgentSingle::SetStateValue(const std::vector<double>& state, const std::vector<vector<double>>& actions, const int Qval)
+{
+	actionValue->SetQValues(state, actions, Qval);
+}
+
 vector<double> AgentSingle::GetState()
 {
 	return state;
@@ -122,6 +128,8 @@ void  AgentSingle::LoadLearnerArchive(string filename)
 			catch (std::exception &e)
 			{
 				std::cout << "Exception thrown from Loading: " << e.what() << std::endl;
+				std::cout << "Error Archive Name: " << filename << endl;
+				abort();
 			}
 		}
 		catch (std::exception &e)

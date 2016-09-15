@@ -63,7 +63,7 @@ typedef void(__cdecl *PerformUpdate)(const int AgentIDNum, const double* StatePr
 typedef void(__cdecl *cherryEntry)(const double* AvailActions, const int ActSize, const int AAsz, const double* StartState, const int SSsz);
 typedef void(__cdecl *nameCherry)(const int desiredCherry, const char* name, const int nameSize);
 typedef void( _cdecl *cherryExit) ();
-typedef void(__cdecl *SaveLearner)();
+typedef void(__cdecl *SaveLearner)(bool isTerminal);
 typedef void(__cdecl *LoadLearner)();
 
 static SaveLearner Save;
@@ -95,6 +95,7 @@ int tryProcedure = 0;
 double checkpointStartTime = 0;
 bool hasSaved = false;
 bool commitLapTimeWasTrue = true;
+bool askRestart = false;
 
 
 Driver::Driver(int index) 
@@ -106,8 +107,10 @@ Driver::Driver(int index)
 
 Driver::~Driver()
 {
-	std::cout << "Terminating state was: " << "Seg:" << state[0] << " Speed:" << state[1] << " Angle: " << state[2] << " Offset:" << state[3] << "Y-Vel: "<<state[4]<< std::endl;
-	Save();
+	std::cout << "Terminating state was: " << "Seg-Type:" << car->pub.trkPos.seg->id<< " E-X-Vel:" << state[1] << " E-Y-Vel: " << state[2] << " E-Angle:" << state[3] << " E-Offset: "<<state[4]/*<< " Seg: "<<state[5]*/<< std::endl;
+	
+	//std::cout <<"!Driver Ask restart "<< askRestart << std::endl;
+	Save(askRestart);//Use the ask Restart for if the Save was from a terminal state
 
 	LeaveTheCherry();
 
@@ -226,7 +229,7 @@ void Driver::newRace(tCarElt * car, tSituation * situation)
 	pit = new Pit(situation, this);
 
 	//Initialize the Cherry learner(s)
-	angle = trackangle - car->_yaw;
+	angle = (trackangle - car->_yaw);
 	std::string name;
 
 
@@ -243,6 +246,8 @@ void Driver::newRace(tCarElt * car, tSituation * situation)
 
 	lastLap = car->race.laps;
 	oldSeg = car->pub.trkPos.seg->id;
+	car->ctrl.askRestart = false;
+
 	Load();
 }
 
@@ -252,12 +257,16 @@ double* Driver::setActions()
 	action = new double[3];
 
 	//const int throttleSize = 2, brakeSize = 3, SteerSize = 5 ;
-	AAsz = 27; //with 9 controls, and each size 3, this makes the avail action size 27
+	AAsz = 9;
+	//AAsz = 27; //with 9 controls, and each size 3, this makes the avail action size 27
+	
+	
 	ActSize = 3;
 
 	//List in the order of throttle, brake, steer
 	//up, down, left, right, UL,UR, DL, DR, nothing
-	double temp[] = { 1,0,0, 0,1,0, 0,0,1, 0,0,-1, 1,0,1, 1,0,-1, 0,-1,1, 0,-1,-1, 0,0,0 };
+	//double temp[] = { 1,0,0, 0,1,0, 0,0,1, 0,0,-1, 1,0,1, 1,0,-1, 0,-1,1, 0,-1,-1, 0,0,0 };
+	double temp[] = { 0,0,1, 0,0,0, 0,0,-1 };
 	AvailActions = new double[AAsz];
 	
 	for (int i = 0; i < AAsz; i++)
@@ -274,19 +283,27 @@ double* Driver::setActions()
 //Will be used for setting the Start State and also for updating what the current state is.
 double* Driver::setState()
 {
-	stateSize = 5;
+	stateSize = 5+3;
 	float tm =(car->_trkPos.toMiddle);//absolute distance from middle, 
 	float w = car->pub.trkPos.seg->width / WIDTHDIV;// how far from middle we will allow
 	double* ret = new double[stateSize];
 	int i = 0;
+
+	//Ego Learner
+	ret[i++] = (int)(trackangle * 10);
+	ret[i++] = 10;// (int)car->_speed_X;
+	ret[i++] = 0;//(int)(car->_speed_Y);
+	ret[i++] = ((int)(angle * 100) /1)* 1;
+	ret[i++] = (int)((int)((tm / w) * 100));
+
 	
 //	Alo States for throttle Controller
 	ret[i++] = (car->pub.trkPos.seg->id); //std::cout << ret[i - 1] << std::endl;
-	ret[i - 1] += (double)(((int)(1 - (getDistToSegeEnd() / car->pub.trkPos.seg->length) * 10) / 5) * 5) / 10;
-	ret[i++] = (int)(car->_speed_X/2)*2;// std::cout << "speed_X: " << ret[i - 1] << std::endl;
-	ret[i++] = ((int)(angle * 100)/5)*5; //std::cout << "angle: " << ret[i - 1] << std::endl;
-	ret[i++] = (int)((int)((tm / w)*10)/ 5 )* 5; //std::cout << "tm / w: " << ret[i - 1] << std::endl;
-	ret[i++] = (int)(car->_speed_Y);// std::cout << "Velocity:y = " << ret[i - 1] << std::endl;
+	ret[i - 1] += (double)(((int)(1 - (getDistToSegeEnd() / car->pub.trkPos.seg->length) * 10) / 1) * 1) / 10;
+	//ret[i++] = (int)(car->_speed_X/2)*2;// std::cout << "speed_X: " << ret[i - 1] << std::endl;
+	ret[i++] = ((int)(angle * 100)/1)*1; //std::cout << "angle: " << ret[i - 1] << std::endl;
+	ret[i++] = (int)((int)((tm / w) * 100)); //std::cout << "tm / w: " << ret[i - 1] << std::endl;
+	//ret[i++] = (int)(car->_speed_Y / 2) * 2;// std::cout << "Velocity:y = " << ret[i - 1] << std::endl;
 
 	return ret;//Remember to change the Cherries and and stateSize(top of this function)
 };
@@ -299,18 +316,19 @@ void Driver::drive(tSituation * situation)
 {
 
 	memset(&car->ctrl, 0, sizeof(tCarCtrl));// we are allocation sizeof(tCarCtrl) bytes of memory from car->ctrl
-	car->ctrl.askRestart = false;
+	
 
 
 	//For the driver
 	trackangle = RtTrackSideTgAngleL(&(car->_trkPos));
-	angle = trackangle - car->_yaw;
+	angle = (trackangle - car->_yaw);
 	NORM_PI_PI(angle);
 
 	//std::cout << "Curr Lap time = " << car->race.curLapTime << std::endl;
 	if (isStuck()  || car->race.curLapTime > 180)
 	{
-		car->ctrl.askRestart = true;		
+		askRestart = car->ctrl.askRestart = true;
+		return;
 	}
 	else
 	{	
@@ -322,9 +340,11 @@ void Driver::drive(tSituation * situation)
 
 			for (int i = 0; i < stateSize; i++)
 			{
-				if (i == 1) continue;
+				//if (i == 1) continue;
 				if (state[i] != oldstate[i] || firstStep || sqrt(car->_speed_X * car->_speed_X) < 1)
-					doUpdate = true;
+				{
+					doUpdate = true; 
+				}
 			}
 			if (doUpdate)
 			{
@@ -336,20 +356,28 @@ void Driver::drive(tSituation * situation)
 			firstStep = false;
 			car->_steerCmd = action[Steer];// filterSColl(getSteer());
 			car->_gearCmd = getGear();// car->_gear + action[0];/// getGear();
-			car->_brakeCmd = filterABS(action[Brake]);
-			car->_accelCmd = action[Throttle];
+			//car->_brakeCmd = filterABS(action[Brake]);
+			car->_brakeCmd = filterABS(getBrake());
+			//car->_accelCmd = action[Throttle];
+			if (car->_speed_X > 10)
+				car->_accelCmd = 0;
+			else if (car->_speed_X < 10 && abs(car->_speed_Y) < 10)
+				car->_accelCmd = 1;
+			//car->_accelCmd = getAccel();
 			car->_clutchCmd = getClutch();
 		}
 	}
 
 	if (!(car->race.laps % 10) && car->race.laps > 1 && !hasSaved)
 	{
-		Save();
+		Save(false);
 		hasSaved = true;
 	}
 	if (car->race.laps % 10)
 		hasSaved = false;
 
+	askRestart = car->ctrl.askRestart;
+	
 }
 
 // Set pitstop commands.
@@ -478,29 +506,29 @@ void Driver::updateState(tSituation * s)
 {
 
 	//For the Cherries
-	int reward = -5 + car->_speed_X;
+	int reward = -10;//+ car->_speed_X;
 
 	int curSeg = car->pub.trkPos.seg->id;
 
 	if (car->race.laps > lastLap)
 	{
-		if (commitLapTimeWasTrue)
-			reward += 50 - ((car->race.lastLapTime - checkpointStartTime)) * 100;
-		commitLapTimeWasTrue = true;
+	//	if (commitLapTimeWasTrue)
+	//		reward += 50 - ((car->race.lastLapTime - checkpointStartTime)) * 100;
+	//	commitLapTimeWasTrue = true;
 
-		lastLap = car->race.laps;
+	//	lastLap = car->race.laps;
 		oldSeg = -1;
-		if (car->race.bestLapTime != 0 && car->race.bestLapTime < bestLapTime)
-		{
-			bestLapTime = car->race.bestLapTime;
-			//reward += 10;
+	//	if (car->race.bestLapTime != 0 && car->race.bestLapTime < bestLapTime)
+	//	{
+	//		bestLapTime = car->race.bestLapTime;
+	//		//reward += 10;
 		}
-	}
+	//}
 	if(curSeg > oldSeg || oldSeg == -1)
 	{
-		if (oldSeg != -1)
+		//if (oldSeg != -1)
 		{
-			int temp = 50 - ((car->race.curLapTime - checkpointStartTime)) * 100;
+			int temp = 0;//- ((car->race.curLapTime - checkpointStartTime)) * 100;
 			if (temp > 0)
 				reward += temp;
 
@@ -524,10 +552,10 @@ void Driver::updateState(tSituation * s)
 		reward -= 100;
 		car->ctrl.askRestart = true;
 	}
-	if (car->_speed_X < 1 && (action[Throttle] < 0.1 || action[Brake] > 0))
-	{	
-		reward -= 100;
-	}
+	//if (car->_speed_X < 1 && (action[Throttle] < 0.1 || action[Brake] > 0))
+	//{	
+	//	reward -= 100;
+	//}
 
 	//Detect off track
 	float tm = fabs(car->_trkPos.toMiddle);//absolute distance from middle, 
@@ -536,9 +564,10 @@ void Driver::updateState(tSituation * s)
 	{
 		//offTrack = true;
 		car->ctrl.askRestart = true;
-		reward = -100;
+		reward = -1000;
 	}
 
+	
 	CherryUpdate(0,state, reward);
 	
 

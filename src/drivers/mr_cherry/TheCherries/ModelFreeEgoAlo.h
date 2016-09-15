@@ -1,6 +1,6 @@
 #pragma once
-#ifndef MODELBASEDEGOALO_H
-#define MODELBASEDEGOALO_H
+#ifndef ModelFreeEgoAlo_H
+#define ModelFreeEgoAlo_H
 
 #include "stdafx.h"
 #include "QLearning.h"
@@ -9,7 +9,7 @@
 
 
 
-class ModelBasedEgoAlo :
+class ModelFreeEgoAlo :
 	public ModelBasedBase
 {
 private:
@@ -20,14 +20,14 @@ private:
 	typedef unordered_map<stateType, map<actionType, double>> QTableType;
 
 public:
-	
-	ModelBasedEgoAlo() : egoSize(NULL) {};
-	ModelBasedEgoAlo(const vector<vector<double>>& AvailActions, const vector<double>& StartState,const int NumEgoFeatures);
-	ModelBasedEgoAlo(const vector<vector<double>>& AvailActions, const vector<double>& StartState, const int NumEgoFeatures, double DefQ, double gam, int maxUps);
-	virtual ~ModelBasedEgoAlo();
+
+	ModelFreeEgoAlo() : egoSize(NULL) {};
+	ModelFreeEgoAlo(const vector<vector<double>>& AvailActions, const vector<double>& StartState, const int NumEgoFeatures);
+	ModelFreeEgoAlo(const vector<vector<double>>& AvailActions, const vector<double>& StartState, const int NumEgoFeatures, double DefQ, double gam, int maxUps);
+	virtual ~ModelFreeEgoAlo();
 
 
-	
+
 	stateType PredictNextState(stateType state, actionType action);
 	map<stateType, double> PredictNextStates(stateType state, actionType action);
 	double PredictReward(stateType state, actionType action, stateType newState);
@@ -48,8 +48,8 @@ public:
 	void ResetStats();
 
 private:
-	
-	void updatePredictionModels(const stateType& oldEgo,const actionType& act,const stateType& newAlo,const stateType& oldAlo,const double rew);
+
+	void updatePredictionModels(const stateType& oldEgo, const actionType& act, const stateType& newAlo, const stateType& oldAlo, const double rew);
 
 
 	//Serialization
@@ -58,27 +58,28 @@ private:
 	inline void serialize(Archive & ar, const unsigned int version);
 
 	//****MEMBERS****//
-	ModelBasedLearning aloLearner,rewardPredictionModel;
+	QLearning aloLearner;
+	ModelBasedLearning  rewardPredictionModel;
 	vector<ModelBasedLearning> aloFeaturePredictionModels; //This is the Ego part of the learner, each model uses .value to return its prediction on what change in feature is
 
-	//Kept for re-setting the model-Based(alocentric) learner
+														   //Kept for re-setting the model-Based(alocentric) learner
 	vector<vector<double>> availableActions;
-	vector<double> startState; 
-	
+	vector<double> startState;
+
 	vector<unordered_map<stateType, int>> visitedStates; //Keep track #-times an action has led to an alo-state. 
-	map<actionType,unordered_map<stateType, int>> visitedEgoStates;//Keep Track #-times an action has been seen at an ego state
+	map<actionType, unordered_map<stateType, int>> visitedEgoStates;//Keep Track #-times an action has been seen at an ego state
 	PerformanceStats perfStats;
 
 	int updateTerminationStepCount = 10;
-	 int egoSize;
+	int egoSize;
 	double gamma = 0.9, defQ = 10, maxUps = 120;
-	int steps = 0,minStepsRequired = 15;//How many steps this class has seen taken, (number of times that update has been called)
+	int steps = 0, minStepsRequired = 15;//How many steps this class has seen taken, (number of times that update has been called)
 
 };
 #endif
 
 template<class Archive>
-inline void ModelBasedEgoAlo::serialize(Archive & ar, const unsigned int version)//Does not provide the start state, parameters (except egoSize)
+inline void ModelFreeEgoAlo::serialize(Archive & ar, const unsigned int version)//Does not provide the start state, parameters (except egoSize)
 {
 	ar & boost::serialization::base_object<ModelBasedBase>(*this);
 	ar & availableActions;
@@ -97,4 +98,4 @@ inline void ModelBasedEgoAlo::serialize(Archive & ar, const unsigned int version
 
 }
 
-BOOST_CLASS_EXPORT_KEY(ModelBasedEgoAlo);
+BOOST_CLASS_EXPORT_KEY(ModelFreeEgoAlo);

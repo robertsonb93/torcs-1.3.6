@@ -11,6 +11,7 @@
 	class QLearning : public ModelFreeBase
 	{
 	public:
+		QLearning() {};
 		 QLearning(const vector<vector<double>> AA);
 		 QLearning(const vector<vector<double>> AA, const double alph, const double gam, const double defQ);
 		 ~QLearning();
@@ -18,6 +19,8 @@
 		 double Value(const vector<double>& state, const vector<double>& action);
 		 vector<double> Value(const vector<double>& state, const vector<vector<double>>& actions);
 		 double Update(const StateTransition & transition);
+		 double SetQValues(const std::vector<double>& state, const std::vector<vector<double>>& actions, const int Qval);
+
 		 PerformanceStats& GetStats();
 		 void SetStats(PerformanceStats& PS);		
 
@@ -45,9 +48,12 @@
 	template<class Archive>
 	inline void QLearning::serialize(Archive & ar, const unsigned int version)
 	{
+		ar & alpha;
+		ar & gamma;
+		ar & defaultQ;
 		ar & boost::serialization::base_object<ModelFreeBase>(*this);
 		ar & table;
-		std::cout << QTable.size() << std::endl;
+		std::cout << table.size() << std::endl;
 		ar & defaultMap;
 		ar & availableActions;
 	}

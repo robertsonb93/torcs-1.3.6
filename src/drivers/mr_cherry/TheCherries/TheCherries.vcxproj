@@ -214,6 +214,7 @@
     <ClInclude Include="ModelBasedEgoAlo.h" />
     <ClInclude Include="ModelBasedLearning.h" />
     <ClInclude Include="ModelFreeBase.h" />
+    <ClInclude Include="ModelFreeEgoAlo.h" />
     <ClInclude Include="OptimalPolicy.h" />
     <ClInclude Include="PerformanceStats.h" />
     <ClInclude Include="PolicyBase.h" />
@@ -233,6 +234,7 @@
     <ClCompile Include="EpsilonGreedy.cpp" />
     <ClCompile Include="ModelBasedEgoAlo.cpp" />
     <ClCompile Include="ModelBasedLearning.cpp" />
+    <ClCompile Include="ModelFreeEgoAlo.cpp" />
     <ClCompile Include="OptimalPolicy.cpp" />
     <ClCompile Include="PerformanceStats.cpp" />
     <ClCompile Include="QLearning.cpp" />

@@ -32,6 +32,7 @@ typedef QLearning _DefaultAVType;
 
 		 void setPossibleActions(vector < vector<double>>& AA) { possibleActions = AA; };
 		 void SetState(vector<double>& inputState);
+		 void SetStateValue(const std::vector<double>& state, const std::vector<vector<double>>& actions, const int Qval);
 		 vector<double> GetState();
 		 PerformanceStats GetStats();
 		 void SetStats(PerformanceStats& PS);

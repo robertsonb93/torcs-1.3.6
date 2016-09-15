@@ -34,6 +34,7 @@ public:
 	double Value(const vector<double>& state,const vector<double>& action);
 	vector<double> Value(const vector<double>& state,const vector<vector<double>>& actions);
 	double Update(const StateTransition & transition);
+	double SetQValues(const std::vector<double>& state, const std::vector<vector<double>>& actions, const int Qval);
 	
 	PerformanceStats& GetStats();
 	void SetStats(PerformanceStats& PS);
@@ -80,9 +81,11 @@ inline void ModelBasedLearning::serialize(Archive & ar, const unsigned int versi
 	ar & QTable;
 	std::cout << QTable.size() << std::endl;
 	ar & defaultMap;
-	
-	
-	//ar & priority;
+	ar & gamma;
+	ar & maxUpdates;
+	ar & defaultQ;
+	ar & startState;
+	ar & priority;
 	ar & predecessors;
 	ar & availableActions;
 }

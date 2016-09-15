@@ -32,6 +32,7 @@ class WorldBase;
 		 virtual void setPossibleActions(vector<vector<double>>& AA) = 0;
 		 virtual void setActionValue(ActionValue* newAv) = 0;
 		 virtual void setPolicy(PolicyBase* newPol) = 0;
+		 virtual void SetStateValue(const std::vector<double>& state, const std::vector<vector<double>>& actions, const int Qval) = 0;
 
 		 
 		 virtual WorldBase* setInterpretor(InterpretorBase* intrptr) = 0;//The type of intrptr will define the world.

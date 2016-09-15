@@ -49,6 +49,23 @@ std::vector<double> EpsilonGreedy::selectAction(std::vector<std::vector<double>>
 		//		cout << values[i] << ',';
 		//cout << endl;
 
+		//try
+		//{
+		//	string filename = "drivers\\mr_cherry\\TheCherries\\";
+		//	ofstream out2CSV(filename + "Values.csv", fstream::app);
+		//	if (out2CSV.is_open()) {
+
+		//		for (int i = 0; i < values.size(); i++)
+		//			out2CSV << values[i] << ',';
+		//	}
+		//	out2CSV.close();
+		//}
+		//catch (const std::exception& e)
+		//{
+		//	cout << "Threw Exception from EpsilonGreedy::selectACtion " << e.what();
+		//	abort();
+		//}
+
 		return availableActions[c];
 	}
 	else //Randomly select a value

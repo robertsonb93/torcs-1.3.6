@@ -154,7 +154,7 @@ double ModelBasedLearning::Update(const StateTransition& transition)
 
 	auto & TR_it = TR[OS][ACT].emplace(pair<stateType, pair<double, double>>(NS, pair<double, double>(0, 0))).first->second;
 	++(TR_it.first);//The trans
-	TR_it.second = transition.getReward();
+	TR_it.second = TR_it.second + (transition.getReward() -TR_it.second)/ TR_it.first;
 
 	//Update a predecessors so that they contain the new state. and the transition from the old
 	predecessors[NS][OS].emplace(ACT);
@@ -199,6 +199,16 @@ double ModelBasedLearning::Update(const StateTransition& transition)
 	}
 	cleanUpPriority();
 	return i;
+}
+
+double ModelBasedLearning::SetQValues(const std::vector<double>& state, const std::vector<vector<double>>& actions, const int Qval)
+{
+	for each  (vector<double> act in actions)
+	{
+		QTable[state][act] = Qval;
+	}
+	
+	return 0;
 }
 
 PerformanceStats& ModelBasedLearning::GetStats()
@@ -260,6 +270,7 @@ inline void ModelBasedLearning::UpdateQ(const stateType& state, actionType& acti
 			maxQ = defaultQ;
 
 		double thisR = T_iter->second.second;//The reward, where T_iter is the [S][A], ->second is the S^, thus ->second.second is reward for [s][a][s^]
+	
 		newQ += (T_iter->second.first / P) * (thisR + (gamma * maxQ));
 	}
 		//Put the new value in the QTable

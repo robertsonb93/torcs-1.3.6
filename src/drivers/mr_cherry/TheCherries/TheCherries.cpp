@@ -3,7 +3,9 @@
 #include "ModelBasedEgoAlo.h"
 #include "EpsilonGreedy.h"
 #include "OptimalPolicy.h"
+#include "ModelFreeEgoAlo.h"
 #include <iostream>
+#include <fstream>
 
 //The outermost vector on these refer to the index of a specific agent in a multi agent system.
 	vector<AgentBase*> AgentVec; //	AgentBase* Agent = nullptr;
@@ -45,9 +47,11 @@ extern "C" int _cdecl cherryEntry(const double* AvailActionsInput, const int Act
 	StartStateVect[curAgent].assign(StartState, StartState + SSSize);//Give the Agent its starting State
 	AgentVec.push_back(new AgentSingle());
 	//Agent->setActionValue(new ModelBasedEgoAlo(AvailableActions, StartStateVect, 6));
-	//Agent->setActionValue(new ModelBasedEgoAlo(AvailableActions, StartStateVect, 6,1,0.99999,120));
-	AgentVec[curAgent]->setActionValue(new ModelBasedLearning(AvailableActions[curAgent], StartStateVect[curAgent], 10000,0.99,10000));
-	AgentVec[curAgent]->setPolicy(new EpsilonGreedy(.75));
+	//AgentVec[curAgent]->setActionValue(new ModelBasedEgoAlo(AvailableActions[curAgent], StartStateVect[curAgent],5,200,0.98,10000));
+	AgentVec[curAgent]->setActionValue(new ModelFreeEgoAlo(AvailableActions[curAgent], StartStateVect[curAgent], 5, 200, 0.98, 10000));
+	//AgentVec[curAgent]->setActionValue(new ModelBasedLearning(AvailableActions[curAgent], StartStateVect[curAgent], 10,0.98,10000));
+	//AgentVec[curAgent]->setActionValue(new QLearning(AvailableActions[curAgent], 0.99, 0.98, 10000));
+	AgentVec[curAgent]->setPolicy(new EpsilonGreedy(1));
 	AgentVec[curAgent]->setPossibleActions(AvailableActions[curAgent]);
 
 	
@@ -103,6 +107,23 @@ extern "C" void PerformUpdate(const int chosenAgent, const double* StatePrime, c
 	
 	AgentVec[chosenAgent]->LogEvent(StateTransition(AgentVec[chosenAgent]->GetState(), SPrime, LastAction[chosenAgent], Reward));
 
+	/*string filename = "drivers\\mr_cherry\\TheCherries\\";
+	ofstream outCSV(filename + "State.csv", fstream::app);*/
+	
+	//try
+	//{
+	//	if (outCSV.is_open()) {
+	//		
+	//		for (int i = 0;i<SPrime.size();i++)
+	//			outCSV << SPrime[i] << ',';
+	//	}
+	//	outCSV.close();
+	//}
+	//catch (const std::exception& e)
+	//{
+	//	cout << "Threw Exception from TheCherries:PerformUpdate: " << e.what();
+	//	abort();
+	//}
 }
 
 extern "C" void LoadLearner()
@@ -122,18 +143,30 @@ extern "C" void LoadLearner()
 	
 }
 
-extern "C" void SaveLearner()
+extern "C" void SaveLearner(bool Terminal)
 {
+	string filename = "drivers\\mr_cherry\\TheCherries\\";
 
+	if (Terminal)//We need to set the values for the Terminal STate to 0;
+	for(int i=0;i<numAgents;i++)	
+			{
+				AgentVec[i]->SetStateValue(AgentVec[i]->GetState(), AvailableActions[i], 0);
+				//ofstream outCSV(filename + "State.csv", fstream::app);
+				//ofstream out2CSV(filename + "Values.csv", fstream::app);
+				//outCSV << '\n';
+				//out2CSV << '\n';
+			}
 	
 	if (numAgents != AgentVec.size()){cout << "NumAgent != AgentVecSize. " << numAgents << " != " << AgentVec.size(); abort();}
 	if (modelNames.size() != AgentVec.size()){cout << "modelNamesSize != AgentVecSize. " << modelNames.size() << " != " << AgentVec.size(); abort();}
 
-	string filename = "drivers\\mr_cherry\\TheCherries\\";
+
 	for (int i = 0; i < AgentVec.size(); i++)
 	{
 		AgentVec[i]->SaveLearnerArchive(filename + modelNames[i]+ ".bin");
 	
 	}
+
+
 
 }

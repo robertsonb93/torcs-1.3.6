@@ -12,7 +12,7 @@ ModelBasedEgoAlo::ModelBasedEgoAlo(const vector<vector<double>>& AvailActions, c
 	//Properly size the aloFeaturePrediction vector, we are creating a model for each feature of the alo state space. Plus one of the reward prediction
 	//Notice the gamma set to 0
 	for (unsigned int i = egoSize; i < startState.size(); i++)
-		aloFeaturePredictionModels.push_back(ModelBasedLearning(AvailActions, StartState, 10, 0, 120));
+		aloFeaturePredictionModels.push_back(ModelBasedLearning(AvailActions, StartState, 0, 0, 120));
 	visitedStates.resize(AvailActions.size());
 	
 
@@ -25,7 +25,7 @@ ModelBasedEgoAlo::ModelBasedEgoAlo(const vector<vector<double>>& AvailActions, c
 	//Properly size the aloFeaturePrediction vector
 	//Notice the gamma set to 0
 	for (unsigned int i = egoSize; i < startState.size(); i++)
-		aloFeaturePredictionModels.push_back(ModelBasedLearning(AvailActions, StartState, DefQ, 0, MaxUps));
+		aloFeaturePredictionModels.push_back(ModelBasedLearning(AvailActions, StartState, 0, 0, MaxUps));
 	visitedStates.resize(AvailActions.size());
 };
 
@@ -125,20 +125,36 @@ double ModelBasedEgoAlo::Update(const StateTransition & transition)
 			const auto& currAct = availableActions[i];
 			const auto& seenAct = visitedEgoStates.find(currAct);
 			//If we have seen this action from the egoState, and then the number of times we have seen this ego state > 0.
-			if (seenAct != visitedEgoStates.end() && seenAct->second.find(egoNewState) != seenAct->second.end())
+			if (seenAct != visitedEgoStates.end() && (seenAct->second.find(egoNewState) != seenAct->second.end()))
 			{		
+				//if (seenAct->second.find(egoNewState)->second > 3)
+				{
+					//std::cout << seenAct->second.find(egoNewState)->second << endl;
 					stateType predictedAlo(alloNewState);
 					for (unsigned int j = 0; j < aloFeaturePredictionModels.size(); j++)
 						predictedAlo[j] += aloFeaturePredictionModels[j].Value(egoNewState, currAct);//Get all the predicted changes for each alocentric feature	
 
 					PerformanceStats tempStats = aloLearner.GetStats();
 					aloLearner.Update(StateTransition(alloNewState, predictedAlo, currAct, double(rewardPredictionModel.Value(egoNewState, currAct))));
-					aloLearner.SetStats((tempStats));			
+					aloLearner.SetStats((tempStats));
+				}
 			}
 		}
 		}
 	}
 	return 0.0;
+}
+
+double ModelBasedEgoAlo::SetQValues(const std::vector<double>& state, const std::vector<vector<double>>& actions, const int Qval)
+{
+	vector<double> egoState(state.begin(), state.begin() + egoSize), alostate(state.begin() + egoSize, state.end());
+	aloLearner.SetQValues(alostate, actions, Qval);
+
+	for (int i = 0; i < aloFeaturePredictionModels.size(); i++)
+		aloFeaturePredictionModels[i].SetQValues(egoState, actions, Qval);
+
+	rewardPredictionModel.SetQValues(egoState, actions, Qval);
+	return 0;
 }
 
 double ModelBasedEgoAlo::Value(const vector<double>& state, const vector<double>& action)

@@ -129,6 +129,9 @@
     <ClInclude Include="HashVecDoubles.h">
       <Filter>Header Files\Auxilliaries</Filter>
     </ClInclude>
+    <ClInclude Include="ModelFreeEgoAlo.h">
+      <Filter>Header Files\ActionValue</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PerformanceStats.cpp">
@@ -171,6 +174,9 @@
       <Filter>Source Files\Interpretors</Filter>
     </ClCompile>
     <ClCompile Include="TheCherries.cpp" />
+    <ClCompile Include="ModelFreeEgoAlo.cpp">
+      <Filter>Source Files\ActionValue</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="StateVects.natvis">
