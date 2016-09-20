@@ -293,7 +293,7 @@ double* Driver::setState()
 	ret[i++] = (int)(trackangle * 10);
 	ret[i++] = 10;// (int)car->_speed_X;
 	ret[i++] = 0;//(int)(car->_speed_Y);
-	ret[i++] = ((int)(angle * 100) /1)* 1;
+	ret[i++] = ((int)(angle * 100));
 	ret[i++] = (int)((int)((tm / w) * 100));
 
 	
@@ -301,7 +301,7 @@ double* Driver::setState()
 	ret[i++] = (car->pub.trkPos.seg->id); //std::cout << ret[i - 1] << std::endl;
 	ret[i - 1] += (double)(((int)(1 - (getDistToSegeEnd() / car->pub.trkPos.seg->length) * 10) / 1) * 1) / 10;
 	//ret[i++] = (int)(car->_speed_X/2)*2;// std::cout << "speed_X: " << ret[i - 1] << std::endl;
-	ret[i++] = ((int)(angle * 100)/1)*1; //std::cout << "angle: " << ret[i - 1] << std::endl;
+	ret[i++] = ((int)(angle * 100)/5)*5; //std::cout << "angle: " << ret[i - 1] << std::endl;
 	ret[i++] = (int)((int)((tm / w) * 100)); //std::cout << "tm / w: " << ret[i - 1] << std::endl;
 	//ret[i++] = (int)(car->_speed_Y / 2) * 2;// std::cout << "Velocity:y = " << ret[i - 1] << std::endl;
 
@@ -317,8 +317,8 @@ void Driver::drive(tSituation * situation)
 
 	memset(&car->ctrl, 0, sizeof(tCarCtrl));// we are allocation sizeof(tCarCtrl) bytes of memory from car->ctrl
 	
-
-
+	
+	
 	//For the driver
 	trackangle = RtTrackSideTgAngleL(&(car->_trkPos));
 	angle = (trackangle - car->_yaw);
@@ -343,33 +343,40 @@ void Driver::drive(tSituation * situation)
 				//if (i == 1) continue;
 				if (state[i] != oldstate[i] || firstStep || sqrt(car->_speed_X * car->_speed_X) < 1)
 				{
-					doUpdate = true; 
+					doUpdate = true; break;
 				}
 			}
 			if (doUpdate)
 			{
 				updateState(situation);
 				oldstate = state;
+
 				action = CherryAction(0);
+
 				doUpdate = false;
 			}
+
+			
 			firstStep = false;
 			car->_steerCmd = action[Steer];// filterSColl(getSteer());
 			car->_gearCmd = getGear();// car->_gear + action[0];/// getGear();
 			//car->_brakeCmd = filterABS(action[Brake]);
-			car->_brakeCmd = filterABS(getBrake());
+			car->_brakeCmd = 0;//filterABS(getBrake()); // getBrake() is entering into a extremely large while loop. 		
 			//car->_accelCmd = action[Throttle];
 			if (car->_speed_X > 10)
 				car->_accelCmd = 0;
 			else if (car->_speed_X < 10 && abs(car->_speed_Y) < 10)
 				car->_accelCmd = 1;
-			//car->_accelCmd = getAccel();
+			else {
+				car->_accelCmd = getAccel();
+				}
 			car->_clutchCmd = getClutch();
 		}
 	}
 
 	if (!(car->race.laps % 10) && car->race.laps > 1 && !hasSaved)
 	{
+		
 		Save(false);
 		hasSaved = true;
 	}
@@ -377,6 +384,8 @@ void Driver::drive(tSituation * situation)
 		hasSaved = false;
 
 	askRestart = car->ctrl.askRestart;
+
+	
 	
 }
 
@@ -408,7 +417,7 @@ void Driver::endRace(tSituation *s)
 //Handles Opening TheCherries DLL, and then grabs the Functions from the DLL
 void Driver::DoDatDLL()
 {
-
+	
 	LPCSTR txt = TEXT(".\\drivers\\mr_cherry\\TheCherries\\TheCherries.dll");
 	TheCherriesDLLHandle = LoadLibrary(txt);
 	if (TheCherriesDLLHandle != NULL)
@@ -458,6 +467,7 @@ void Driver::DoDatDLL()
 			std::cout << "FailedLoading Load (LoadLearner) function. (DoDatDLL() of mr_cherry::driver)" << std::endl; abort();
 		}
 
+		
 		return;
 	}
 	else
@@ -466,6 +476,7 @@ void Driver::DoDatDLL()
 		system("PAUSE");
 		assert((false));
 	}
+
 }
 
 //Determines if we should start using unstuck protocols
@@ -504,7 +515,7 @@ void Driver::getUnstuck()
 
 void Driver::updateState(tSituation * s)
 {
-
+	
 	//For the Cherries
 	int reward = -10;//+ car->_speed_X;
 
@@ -633,13 +644,16 @@ float Driver::getDistToSegeEnd()
 // Compute initial brake value.
 float Driver::getBrake()
 {
+	
+	std::cout << "Entering Get Brake()" << std::endl;
 	// Car drives backward?
 	if (car->_speed_x < -MAX_UNSTUCK_SPEED) {
+		std::cout << "LEaving Get Brake()" << std::endl;
 		// Yes, brake.
 		return 1.0;
 	}
 	else {
-	
+		std::cout << "Ping 1" << std::endl;
 		// We drive forward, normal braking.
 		tTrackSeg *segptr = car->_trkPos.seg;
 		float mu = segptr->surface->kFriction;
@@ -648,20 +662,30 @@ float Driver::getBrake()
 
 		float allowedspeed = getAllowedSpeed(segptr);
 		if (allowedspeed < car->_speed_x) {
+			std::cout << "LEaving Get Brake()" << std::endl;
 			return MIN(1.0f, (car->_speed_x - allowedspeed) / (FULL_ACCEL_MARGIN));
 		}
-
+		std::cout << "Ping 2" << std::endl;
 		segptr = segptr->next;
-		while (lookaheaddist < maxlookaheaddist) {
+		while (lookaheaddist < maxlookaheaddist) 
+		{
 			allowedspeed = getAllowedSpeed(segptr);
-			if (allowedspeed < car->_speed_x) {
-				if (brakedist(allowedspeed, mu) > lookaheaddist) {
+			if (allowedspeed < car->_speed_x) 
+			{
+				if (brakedist(allowedspeed, mu) > lookaheaddist) 
+				{
+					std::cout << "LEaving Get Brake()" << std::endl;
 					return 1.0f;
 				}
 			}
+
+			std::cout << "MaxLooAheadDist " << maxlookaheaddist;
 			lookaheaddist += segptr->length;
 			segptr = segptr->next;
+			std::cout << " -- LookAheadDist" <<lookaheaddist<< std::endl;
 		}
+
+		std::cout << "LEaving Get Brake()" << std::endl;
 		return 0.0f;
 	}
 }

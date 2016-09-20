@@ -140,7 +140,7 @@ void  AgentSingle::LoadLearnerArchive(string filename)
 		ifs.close();
 	}
 	else
-		std::cout << "FAILED _____ AgentSingle::SaveLearnerArchive - Opened IFS: " << filename << std::endl;
+		std::cout << "FAILED _____ AgentSingle::LoadLearnerArchive - Opened IFS: " << filename << std::endl;
 
 }
 

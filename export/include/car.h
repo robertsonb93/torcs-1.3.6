@@ -346,6 +346,7 @@ typedef struct {
     tdble	clutchCmd;  /**< Clutch command [0.0, 1.0] */
     int		gear;  	    /**< [-1,6] for gear selection */
     int		raceCmd;    /**< command issued by the driver */
+	bool askRestart ;
 #define RM_CMD_NONE		0	/**< No race command */
 #define RM_CMD_PIT_ASKED	1	/**< Race command: Pit asked */
     char	msg[4][32];     /**< 4 lines of 31 characters 0-1 from car 2-3 from race engine */

@@ -132,6 +132,9 @@
     <ClInclude Include="ModelFreeEgoAlo.h">
       <Filter>Header Files\ActionValue</Filter>
     </ClInclude>
+    <ClInclude Include="AnyTimeEgoAloModel.h">
+      <Filter>Header Files\ActionValue</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PerformanceStats.cpp">
@@ -175,6 +178,9 @@
     </ClCompile>
     <ClCompile Include="TheCherries.cpp" />
     <ClCompile Include="ModelFreeEgoAlo.cpp">
+      <Filter>Source Files\ActionValue</Filter>
+    </ClCompile>
+    <ClCompile Include="AnyTimeEgoAloModel.cpp">
       <Filter>Source Files\ActionValue</Filter>
     </ClCompile>
   </ItemGroup>

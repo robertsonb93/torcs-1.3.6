@@ -101,6 +101,7 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -204,6 +205,7 @@
     <ClInclude Include="ActionValue.h" />
     <ClInclude Include="AgentBase.h" />
     <ClInclude Include="AgentSingle.h" />
+    <ClInclude Include="AnyTimeEgoAloModel.h" />
     <ClInclude Include="EgoAloMaze.h" />
     <ClInclude Include="EgoAloMazeInterpretor.h" />
     <ClInclude Include="EpsilonGreedy.h" />
@@ -229,6 +231,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AgentSingle.cpp" />
+    <ClCompile Include="AnyTimeEgoAloModel.cpp" />
     <ClCompile Include="EgoAloMaze.cpp" />
     <ClCompile Include="EgoAloMazeInterpretor.cpp" />
     <ClCompile Include="EpsilonGreedy.cpp" />

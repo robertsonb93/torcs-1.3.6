@@ -70,7 +70,7 @@ private:
 	PerformanceStats perfStats;
 
 	int updateTerminationStepCount = 10;
-	 int egoSize;
+	int egoSize;
 	double gamma = 0.9, defQ = 10, maxUps = 120;
 	int steps = 0,minStepsRequired = 15;//How many steps this class has seen taken, (number of times that update has been called)
 
